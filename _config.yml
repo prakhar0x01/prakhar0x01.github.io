@@ -40,9 +40,9 @@ paginate_path: blog/page:num # jekyll-paginate > blog page
 jekyll-mentions: https://twitter.com # jekyll-mentions > service used when @replying
 twitter:
   username: prakhar0x01 # jekyll-seo-tag > Owners twitter username
-author: Prakhar Porwal # jekyll-seo-tag > default author
+author: Prakhar0x01 # jekyll-seo-tag > default author
 social: # jekyll-seo-tag > social overrides
-  name: Prakhar Porwal # jekyll-seo-tag > real name
+  name: Prakhar0x01 # jekyll-seo-tag > real name
   links:  # jekyll-seo-tag > social aliases (sameAs)
     - https://twitter.com/prakhar0x01
     - https://www.linkedin.com/in/prakhar0x01
@@ -62,12 +62,9 @@ timezone: Asia/Kolkata # Timezone for blog posts and alike
 # 5. Collections
 collections:
   posts:
-    title: Posts # Needed for Siteleaf
+    title: Blogs # Needed for Siteleaf
     output: true
-    description: "My Security Research and Blogs" # The post list page content
-    feature_text: |
-      Welcome to the Blogs
-    feature_image: "https://picsum.photos/2560/600?image=866"
+    description: "My write-ups and stuff I think are interesting" # The post list page content
 
 # 6. Jekyll collections settings
 defaults:
@@ -92,8 +89,8 @@ defaults:
 # 7. Site settings
 encoding: utf-8 # Make sure the encoding is right
 lang: en-GB # Set the site language
-title: "Prakhar Porwal" # Site name or title, also used in jekyll-seo-tag
-logo: "/assets/logos/logo.svg" # Site logo, also used in jekyll-seo-tag
+title: "Prakhar0x01" # Site name or title, also used in jekyll-seo-tag
+logo: "http://127.0.0.1:4000/assets/logos/file.png" # Site logo, also used in jekyll-seo-tag
 description: "An Ordinary guy in the way to become Extra-Ordinary." # Site description and default description, also used in jekyll-seo-tag
 url: "https://prakhar0x01.github.io" # Site url, also used in jekyll-seo-tag
 baseurl: ""
@@ -108,14 +105,14 @@ css_inline: true # Will insert all styles into a single <style> block in the <he
 
 # 8. Site favicons & manifest icons
 favicons: # Favicons are also used in the manifest file. Syntax is 'size: path'
-  16: '/assets/logos/logo@16px.png'
-  32: '/assets/logos/logo@32px.png'
-  96: '/assets/logos/logo@96px.png'
-  120: '/assets/logos/logo@120px.png'
-  144: '/assets/logos/logo@144px.png'
-  180: '/assets/logos/logo@180px.png'
-  512: '/assets/logos/logo@512px.png'
-  1024: '/assets/logos/logo@1024px.png'
+  16: '/assets/logos/file.png'
+  32: '/assets/logos/file.png'
+  96: '/assets/logos/file.png'
+  120: '/assets/logos/file.png'
+  144: '/assets/logos/file.png'
+  180: '/assets/logos/file.png'
+  512: '/assets/logos/file.png'
+  1024: '/assets/logos/file.png'
 
 # 9. Site navigation
 navigation_header:
@@ -127,9 +124,11 @@ navigation_header:
   url: /categories/
 - title: Search
   url: /search/
+- title: Contact
+  url: /contact
 
 navigation_footer:
-- title: Managed by Ghost 💀
+- title: Managed by 💀
   url: https://prakhar0x01.github.io
 
 social_links: # Appears in sidebar. Set the urls then uncomment and comment out as desired
@@ -137,7 +136,6 @@ social_links: # Appears in sidebar. Set the urls then uncomment and comment out 
   LinkedIn: https://www.linkedin.com/in/prakhar0x01
   GitHub: https://github.com/prakhar0x01
   link: https://prakhar0x01.github.io
-  RSS: /feed.xml
 
 sharing_links: # Appear at the bottom of single blog posts, add as desired. The value can be 'true' or the desired button colour
   Twitter: "#0d94e7"

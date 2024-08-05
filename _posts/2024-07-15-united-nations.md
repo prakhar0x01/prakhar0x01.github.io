@@ -14,9 +14,13 @@ image: "https://picsum.photos/2560/600?image=733"
 ### My Approach?
 
 1 - So, as you might know, I don't put so much time in recon & all of that stuff. Hence In this case I did the same.
+
 2 - Hence, I tried very basic google dorks to discover some functional assets & eventually found some of them.
+
 3 - My Burp was running in the background, I authorized my self to the application & started testing various functionalities.
+
 4 - The application is responsible for organizing events in the united nations. So there are various functionalities to test.
+
 5 - Found an API endpoint, where it loads the user data via numeric user-id. changing my user-id to someone else user-id will result in information disclosure. 
 
 ### How I discovered PII leak.

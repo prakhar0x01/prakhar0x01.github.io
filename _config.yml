@@ -90,11 +90,10 @@ defaults:
 encoding: utf-8 # Make sure the encoding is right
 lang: en-GB # Set the site language
 title: "Prakhar0x01" # Site name or title, also used in jekyll-seo-tag
-logo: "http://127.0.0.1:4000/assets/logos/file.png" # Site logo, also used in jekyll-seo-tag
+logo: "https://prakhar0x01.github.io/assets/logos/file.png" # Site logo, also used in jekyll-seo-tag
 description: "An Ordinary guy in the way to become Extra-Ordinary." # Site description and default description, also used in jekyll-seo-tag
 url: "https://prakhar0x01.github.io" # Site url, also used in jekyll-seo-tag
 baseurl: ""
-email: "prakhar0x01@wearehackerone.com"
 # disqus: "alembic-1" # Blog post comments, uncomment the option and set the site ID from your Disqus account
 # date_format: "%-d %B %Y" # Blog post date formatting using placeholder formatting
 # google_analytics: ""

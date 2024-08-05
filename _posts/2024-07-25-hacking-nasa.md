@@ -3,17 +3,17 @@ title: Account Takeovers & more :&nbsp;Hacking NASA
 categories:
 - Security Research
 excerpt: |
-  My experience of finding multiple security vulnerabilities in the NASA Systems. In this blog post, i’ll explain all the technical part and non-technical parts of it.
+  My experience of finding multiple security vulnerabilities in the NASA Systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.
 image: "https://picsum.photos/2560/600?image=733"
 ---
 
-> I recieve letter of appreciation from NASA for finding multiple potential Security vulnerabilities in their systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.
+> I received 3 letters of appreciation from NASA for finding multiple potential Security vulnerabilities in their systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.
 
 ### My Approach?
 
-1 - I decided to look for [Access Control](https://portswigger.net/web-security/access-control), [IDOR's](https://portswigger.net/web-security/access-control/idor), [Authentication](https://portswigger.net/web-security/authentication) Issues. so for that i need functional assets that have some functionalities to break.
+1 - I decided to look for [Access Control](https://portswigger.net/web-security/access-control), [IDOR's](https://portswigger.net/web-security/access-control/idor), [Authentication](https://portswigger.net/web-security/authentication) Issues. So, for that, I need functional assets that have some functionalities that need to be broken.
 
-2 - Hence, I used very basic google dorks to find those assets, as a result found some of them.
+2 - Hence, I used very basic Google Dorks to find those assets, as a result found some of them.
 
 3 - As a result discovered & reported several security vulnerabilities to NASA (P1,P2,P3,P4).
 
@@ -21,7 +21,7 @@ image: "https://picsum.photos/2560/600?image=733"
 > <code style="color:red;"><b>P1</b></code> : <code style="color:Green;"><b>Resolved</b></code>
 
 - Discovered that the Email Change functionality at `█████.pps.eosdis.nasa.gov` is vulnerable to IDOR.
-- Yeah, so now it was pretty much very simple to change your email to some other existing user-email.
+- Yeah, so now it was pretty much very simple to change your email to some other existing user email.
 - Create to account, `Account-A`(attacker) & `Account-B`(victim)
 - Go to `Account A`, Change the email, and Intercept the request.
 
@@ -53,17 +53,18 @@ oldEmail=victim%40email.com&email=test%40email.com&confirmEmail=test%40email.com
 
 **`Host: █████.pps.eosdis.nasa.gov`** with **`Host: your-collaborator-id.oastify.com`**
 
-You'll receive the verification link on email as:
+You'll receive the verification link in your email as:
 
-**`https://yourburpcollaborator-is.oastify.com/registration/verifyContact/verification-token/attacker@email.com.html`**
-
+```
+https://yourburpcollaborator-is.oastify.com/registration/verifyContact/verification-token/attacker@email.com.html
+```
 - As an attacker, I could verify an account with any user email (belonging to individuals who do not intend to have an account on this web app) such as **`@nasa.gov`**.
 
 ### CSRF leads to 1-Click Account Takeover
 > <code style="color:orange;"><b>P3</b></code> : <code style="color:Green;"><b>Resolved</b></code>
 
 - This is another report regarding the same endpoint(case-1), which is the Change Email function. Previously, I discovered the IDOR on the same endpoint. In this report, I found that an attacker can perform a CSRF Attack on the Email Change functionality, allowing them to take over any user's account.
-- Login █████.pps.eosdis.nasa.gov & Navigate to `Update Info` Page. Enable a HTTP interception proxy, such as Burp Suite.
+- Login █████.pps.eosdis.nasa.gov & Navigate to `Update Info` Page. Enable an HTTP interception proxy, such as Burp Suite.
 - Change the email and Intercept the request. Generate the CSRF PoC.
 
 ```html
@@ -81,14 +82,14 @@ You'll receive the verification link on email as:
   </body>
 </html>
 ```
-- Test it in the browser. The email will change & the verification goes to attacker controlled email.
+- Test it in the browser. The email will change & the verification goes to the attacker-controlled email.
 
 ### No Rate Limit on Forget-Password
 > <code style="color:green;"><b>P4</b></code> : <code style="color:Green;"><b>Resolved</b></code>
 
 - Lack of rate limiting on an email triggering endpoint (forget-password) was identified. This allows an attacker to create a large amount of emails to any email address, which they could use to spam a target with emails.
 - Navigate to `█████.hec.nasa.gov/account/recover/pwd` , enter the email then click `Reset Password`
-- Intercept this request in burp suite, the HTTP request look like
+- Intercept this request in the burp suite, the HTTP request looks like
 
 ```r
 POST /rms/apis/public/account/recover HTTP/1.1
@@ -104,16 +105,16 @@ Connection: close
 
 - Send it to the `Intruder` and Under the `Payload Section` choose `payload as null` payloads and generate `50` payloads
 
-- You will recieve `200 OK` in response, you can also check you mail inbox.
-- Systems that use Software-as-a-Service (SaaS) email providers, there can be direct financial costs associated with sending large volumes of email. Triggers email can result in reputational damage for the organisation as users trust is impacted through receiving large amounts of unwanted and unsolicited emails.
+- You will receive `200 OK` in response, you can also check your mail inbox.
+- Systems that use Software-as-a-Service (SaaS) email providers, there can be direct financial costs associated with sending large volumes of email. Triggers emails can result in reputational damage for the organization as user's trust is impacted through receiving large amounts of unwanted and unsolicited emails.
 
 ### Conclusion
-It took me about 30 min to find these vulnerabilities in one asset. I didn't perform so much recon, automation ..etc. Just picked-up one asset from google dorks & Start hacking on it. And the vulnerabilities are pretty much very simple & straight-forward.
+It took me about 30 min to find these vulnerabilities in one asset. I didn't perform so much recon, automation ..etc. Just picked up one asset from Google dorks & Started hacking on it. And the vulnerabilities are pretty much very simple & straightforward.
 
 #### Timeline
 - Reported -> 03/July/2024
 - Triaged -> 04/July/2024
 - Resolved -> 25/July/2024
-- Recieved letter of Appreciation -> 29/July/2024
+- Received letter of Appreciation -> 29/July/2024
 
 <img src="/assets/logos/nasa.jpg" alt="loa_nasa" width="1000" height="auto">

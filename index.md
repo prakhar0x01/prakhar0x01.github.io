@@ -1,13 +1,13 @@
 ---
 title: About Me
 feature_text: |
-  ## Prakhar Porwal
+  ## NAME : REDACTED
   An Ordinary guy in the way to become Extra-Ordinary.
 feature_image: "https://hougumlaw.com/wp-content/uploads/2016/05/light-website-backgrounds-light-color-background-images-light-color-background-images-for-website-1024x640.jpg"
 excerpt: "I'm Prakhar aka Ghost 💀. Just another internet Hacker. Hacked United Nations, US Dept. Of Defence, NASA, Netherlands Government and more. Interest in Gaming (Call Of Duty, Valorant, Counter Strike), Psychology & Philosophy, mental health & last but not least Cars."
 ---
 
-I'm Prakhar aka ([`Ghost 💀`](https://x.com/prakhar0x01)). I've hacked into US Dept. Of Defence, NASA, Netherlands Government, United Nations and more(<code style="color: red;">Confidential</code>). Currently in the way to hack & secure more like them (obviously ethically).
+I'm Prakhar alias ([`Ghost 💀`](https://x.com/prakhar0x01)). I've hacked into US Dept. Of Defence, NASA, Netherlands Government, United Nations and more(<code style="color: red;">Confidential</code>). Currently in the way to hack & secure more like them (obviously ethically).
 
 I've keen interest in Gaming (COD, Valorant, CS), Psychology & Philosophy, mental health & last but not least Cars. I occasionally play CTFs on [TryHackMe](https://tryhackme.com/p/PrakharPorwal) & [HackingHub](https://hackinghub.io/). Sometimes [Chess](https://www.chess.com/) also. So ping me, If you're interested in collaborating or just want to chat about any of these topics, feel free to reach out!
 

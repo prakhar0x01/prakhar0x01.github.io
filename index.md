@@ -1,7 +1,7 @@
 ---
 title: About Me
 feature_text: |
-  ## Ghost 💀
+  ## prakhar0x01 (Ghost 💀)
   An Ordinary guy in the way to become Extra-Ordinary.
 feature_image: "https://hougumlaw.com/wp-content/uploads/2016/05/light-website-backgrounds-light-color-background-images-light-color-background-images-for-website-1024x640.jpg"
 excerpt: "I'm Ghost 💀. Just another internet Hacker. Hacked United Nations, US Dept. Of Defence, NASA, Netherlands Government and more. Interest in Gaming (Call Of Duty, Valorant, Counter Strike), Psychology & Philosophy, mental health & last but not least Cars."
@@ -12,7 +12,7 @@ I'm Prakhar, internet often know me as **[Ghost 💀](https://x.com/prakhar0x01)
 I've responsibly disclosed my exploitations with organizations including the US Dept. Of Defence, NASA, Google, Netherlands Government, United Nations, Sony, LeetCode, TradingView, Groww, Stanford University, Starbucks and more(<code style="color: red;">Confidential</code>). 
 Currently in the way to work with more like them.
 
-Addtionally, I'm Interested in Gaming, Psychology & Philosophy, Mental Health, DarkWeb and more. I occasionally play CTFs on [TryHackMe](https://tryhackme.com/p/PrakharPorwal) & [HackingHub](https://hackinghub.io/). Sometimes [Chess](https://www.chess.com/) also. So ping me, If you're interested in collaborating or just want to chat about any of these topics, feel free to reach out!
+Addtionally, I'm Interested in Gaming, Psychology & Philosophy, Mental Health, DarkWeb and more. I occasionally play CTFs on [TryHackMe](https://tryhackme.com/p/PrakharPorwal) & [HackingHub](https://hackinghub.io/). So ping me, If you're interested in collaborating or just want to chat about any of these topics, feel free to reach out!
 
 ---
 
@@ -52,23 +52,23 @@ Addtionally, I'm Interested in Gaming, Psychology & Philosophy, Mental Health, D
   </div>
   <div class="logo-card">
     <img src="/assets/logos/nasa-logo.svg" alt="NASA">
-    <p>Account Takeover Exploitation</p>
+    <p>Multiple Account Takeovers</p>
   </div>
   <div class="logo-card">
     <img src="/assets/logos/rijks.png" alt="Netherlands Government">
     <p>Internal Server Access (SSRF)</p>
   </div>
   <div class="logo-card">
-    <img src="/assets/logos/leetcode.png" alt="Groww">
+    <img src="/assets/logos/leetcode.png" alt="LeetCode">
     <p>Business Logic Exploitation</p>
   </div>
   <div class="logo-card">
-    <img src="/assets/logos/groww.png" alt="LeetCode">
+    <img src="/assets/logos/groww.png" alt="Groww">
     <p>Information Disclosure</p>
   </div>
   <div class="logo-card">
     <img src="/assets/logos/google.png" alt="Google">
-    <p>Access Control Exploitation</p>
+    <p>Privilege Escalation</p>
   </div>
   <div class="logo-card">
     <img src="/assets/logos/starbucks.png" alt="Starbucks">

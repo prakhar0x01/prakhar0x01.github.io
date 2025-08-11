@@ -1,4 +1,141 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2024-08-26T03:15:22+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Account Takeovers &amp;amp; more : Hacking NASA</title><link href="http://localhost:4000/write-ups/2024/07/25/hacking-nasa/" rel="alternate" type="text/html" title="Account Takeovers &amp;amp; more : Hacking NASA" /><published>2024-07-25T00:00:00+05:30</published><updated>2024-07-25T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/07/25/hacking-nasa</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/07/25/hacking-nasa/"><![CDATA[<blockquote>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2025-08-11T23:55:48+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Exploiting YouTube’s Permission Model : A Privilege Escalation case</title><link href="http://localhost:4000/write-ups/2025/08/11/hacking-google/" rel="alternate" type="text/html" title="Exploiting YouTube’s Permission Model : A Privilege Escalation case" /><published>2025-08-11T00:00:00+05:30</published><updated>2025-08-11T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2025/08/11/hacking-google</id><content type="html" xml:base="http://localhost:4000/write-ups/2025/08/11/hacking-google/"><![CDATA[<hr />
+
+<h5 id="this-issue-was-responsibly-reported-to-google-and-has-been-confirmed-fixed-thanks-to-the-google-security-team-for-their-cooperation">This issue was responsibly reported to Google and has been confirmed fixed. Thanks to the Google security team for their cooperation.</h5>
+
+<p><img src="/assets/logos/fixed.png" alt="fixed-proof" width="1000" height="auto" /></p>
+
+<hr />
+
+<h3 id="my-approach">My Approach?</h3>
+
+<p>1 - My approach does not involves reconnaissance, instead focusing directly on the main application.</p>
+
+<p>2 - In this case, I applied the same method and began testing YouTube Studio’s immediately.</p>
+
+<p>3 - After spending 2-3 hours examining the permission model without notable findings, I shifted attention to accounts with lower privileges, which led to the discovery of this privilege escalation Issue.</p>
+
+<h3 id="affected-product">Affected Product</h3>
+<ul>
+  <li><a href="https://studio.youtube.com/">YouTube Studio</a> — Channel Management Console</li>
+</ul>
+
+<h3 id="vulnerability-type">Vulnerability Type</h3>
+<ul>
+  <li>Privilege Escalation</li>
+  <li>Role-Based Access Control Bypass</li>
+</ul>
+
+<h3 id="severity">Severity</h3>
+<ul>
+  <li>Medium 🟡</li>
+</ul>
+
+<h3 id="description">Description</h3>
+<ul>
+  <li>The <a href="https://support.google.com/youtube/answer/9481328#:~:text=Subtitle%20Editor,-Can%20add%2C%20edit">Subtitle Editor role on YouTube Studio</a> is intended only for adding and editing subtitles on assigned videos.</li>
+</ul>
+
+<p><img src="/assets/logos/permission_model.png" alt="permission_model" width="1000" height="auto" /></p>
+
+<ul>
+  <li>However, through a combination of UI access and direct API calls, it was possible for Subtitle Editors to:
+    <ul>
+      <li>View all private videos uploaded to the channel, even those not explicitly shared with them.</li>
+      <li>Access total channel viewership metrics, exposing sensitive analytics data normally reserved for owners or managers</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="reproduction-steps">Reproduction Steps</h3>
+
+<h5 id="as-the-channel-owner-user-a">As the Channel Owner (User-A):</h5>
+
+<ul>
+  <li>Create a YouTube channel.</li>
+  <li>Invite a user (User-B) and assign them the Subtitle Editor role.</li>
+  <li>Upload one or more Private videos to the channel.</li>
+</ul>
+
+<h5 id="as-the-subtitle-editor-user-b">As the Subtitle Editor (User-B):</h5>
+
+<ul>
+  <li>Log in to YouTube Studio and navigate to the Subtitles tab.</li>
+  <li>Notice that private videos are listed and accessible.</li>
+  <li>Use a crafted API request to YouTube’s internal browse endpoint to retrieve detailed video and channel data, including total viewership metrics.</li>
+</ul>
+
+<h5 id="vulnerable-request">Vulnerable Request</h5>
+
+<div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">POST</span> <span class="nn">/youtubei/v1/browse?prettyPrint=false</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">2</span>
+<span class="na">Host</span><span class="p">:</span> <span class="s">www.youtube.com</span>
+<span class="na">Cookie</span><span class="p">:</span> <span class="s">{USER-B_SSSION}</span>
+<span class="na">Content-Length</span><span class="p">:</span> <span class="s">4412</span>
+<span class="na">Sec-Ch-Ua-Full-Version-List</span><span class="p">:</span><span class="s"> </span>
+<span class="na">Sec-Ch-Ua-Platform</span><span class="p">:</span> <span class="s">"Windows"</span>
+<span class="na">Authorization</span><span class="p">:</span> <span class="s">{USER-B_TOKEN}</span>
+<span class="na">Sec-Ch-Ua</span><span class="p">:</span> <span class="s">"Chromium";v="133", "Not(A:Brand";v="99"</span>
+<span class="s">...snip...</span>
+<span class="na">Referer</span><span class="p">:</span> <span class="s">https://www.youtube.com/channel/{channel-id}/about</span>
+<span class="na">Accept-Encoding</span><span class="p">:</span> <span class="s">gzip, deflate, br</span>
+<span class="na">Priority</span><span class="p">:</span> <span class="s">u=1, i</span>
+
+{"context":{"client":{"hl":"en-GB","gl":"IN","remoteHost":"10.20.30.40","deviceMake":"","deviceModel":"","visitorData":"{visitor_tdata}","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36,gzip(gfe)","clientName":"WEB","clientVersion":"2.20250423.01.00","osName":"Windows","osVersion":"10.0","originalUrl":"{TARGET_VIDEO_URL}","platform":"DESKTOP","clientFormFactor":"UNKNOWN_FORM_FACTOR","configInfo":{"appInstallData":"{AppInstallData}","coldConfigData":"{cold_config_data}","coldHashData":"{cold-hash_data}","hotHashData":"{hotHashData}"},"userInterfaceTheme":"USER_INTERFACE_THEME_DARK","timeZone":"Asia/Calcutta","browserName":"Chrome","browserVersion":"133.0.0.0","acceptHeader":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","deviceExperimentId":"{device_experiment_id}","rolloutToken":"{roll_out_token}","screenWidthPoints":1366,"screenHeightPoints":633,"screenPixelDensity":1,"screenDensityFloat":1,"utcOffsetMinutes":330,"connectionType":"CONN_CELLULAR_4G","memoryTotalKbytes":"8000000","mainAppWebInfo":{"graftUrl":"https://www.youtube.com/channel/{CHANNEL-ID}/about","pwaInstallabilityStatus":"PWA_INSTALLABILITY_STATUS_UNKNOWN","webDisplayMode":"WEB_DISPLAY_MODE_BROWSER","isWebNativeShareAvailable":true}},"user":{"lockedSafetyMode":false,"serializedDelegationContext":"serialized_delegation_context"},"request":{"useSsl":true,"internalExperimentFlags":[],"consistencyTokenJars":[]},"clickTracking":{"clickTrackingParams":"CCMQuy8YACIREDACTEDDFbdVnQkd13U9-Q=="},"adSignalsInfo":{"params":[{"key":"dt","value":"174549581"},{"key":"flash","value":"0"},{"key":"frm","value":"0"},{"key":"u_tz","value":"330"},{"key":"u_his","value":"2"},{"key":"u_h","value":"768"},{"key":"u_w","value":"1366"},{"key":"u_ah","value":"720"},{"key":"u_aw","value":"1366"},{"key":"u_cd","value":"24"},{"key":"bc","value":"31"},{"key":"bih","value":"633"},{"key":"biw","value":"1351"},{"key":"brdim","value":"0,0,0,0,1366,0,1366,720,1366,633"},{"key":"vis","value":"1"},{"key":"wgl","value":"true"},{"key":"ca_type","value":"image"}],"bid":"{bid}"}},"continuation":"{continuation}"}
+</code></pre></div></div>
+
+<blockquote>
+  <p>This request returned analytics data and private video information, which should have been inaccessible to the Subtitle Editor.</p>
+</blockquote>
+
+<h3 id="expected-behavior">Expected Behavior</h3>
+<ul>
+  <li>
+    <p>Subtitle Editors should only be able to add or edit subtitles on videos they are explicitly allowed to manage.</p>
+  </li>
+  <li>
+    <p>They should not see videos marked as Private unless explicitly shared.</p>
+  </li>
+  <li>
+    <p>Analytics and total viewership metrics must be strictly restricted to channel Owners/Managers.</p>
+  </li>
+</ul>
+
+<h3 id="proof-of-concept">Proof Of Concept</h3>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/N_Sw4ajOvYs?si=9XUwum65G-wOlhZR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+<h3 id="impact--risk">Impact &amp; Risk</h3>
+<ul>
+  <li>
+    <p>Exposure of confidential unpublished content: Private videos intended for internal review or embargoed releases become visible to lower-privileged users.</p>
+  </li>
+  <li>
+    <p>Leak of sensitive analytics data: Total channel viewership and performance metrics could give competitors unfair insights or lead to insider leaks.</p>
+  </li>
+  <li>
+    <p>Role-based access control failure: Undermines trust in YouTube Studio’s permission system, potentially causing operational risks for content creators.</p>
+  </li>
+</ul>
+
+<h3 id="real-world-scenario">Real-World Scenario</h3>
+<ul>
+  <li>Imagine a tech company preparing a highly confidential product launch on YouTube. They assign subtitle editors to finalize captioning on unrelated videos. These subtitle editors, due to this vulnerability, can access the unreleased launch videos and associated performance metrics, potentially leaking sensitive information externally.</li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<ul>
+  <li>Thanks to GoogleVRP, Google has since fixed the issue, improving the security posture of YouTube Studio for millions of creators worldwide.</li>
+</ul>
+
+<h4 id="timeline">Timeline</h4>
+<ul>
+  <li>Reported -&gt; 27/Apr/2025</li>
+  <li>Triaged  -&gt; 27/Apr/2025</li>
+  <li>Need More Info -&gt; 07/May/2025</li>
+  <li>Reviewing -&gt; 19/May/2025</li>
+  <li>🎉 Nice catch! -&gt; 26/May/2025</li>
+  <li>$500 Paid -&gt; 24/July/2025</li>
+  <li>Fixed –&gt; 11/Aug/2025</li>
+</ul>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of discovering and reporting a Privilege Escalation case in YouTube Studio (sub-unit of Google). In this blog post, i’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Account Takeovers &amp;amp; more : Hacking NASA</title><link href="http://localhost:4000/write-ups/2024/07/25/hacking-nasa/" rel="alternate" type="text/html" title="Account Takeovers &amp;amp; more : Hacking NASA" /><published>2024-07-25T00:00:00+05:30</published><updated>2024-07-25T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/07/25/hacking-nasa</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/07/25/hacking-nasa/"><![CDATA[<blockquote>
   <p>I received 3 letters of appreciation from NASA for finding multiple potential Security vulnerabilities in their systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.</p>
 </blockquote>
 
@@ -351,7 +488,224 @@
   <li>In personal Call with head of unit &amp; Letter Of Appreciation -&gt; 18/July/2024</li>
 </ul>
 
-<p><img src="/assets/logos/appr1.png" alt="first_response" width="400" height="auto" /></p>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of finding a critical API miconfiguration in the United Nations system which could lead to leak over 1 Million users Personal Identifiable Information.. In this blog post, i’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Not Giving-Up : Hacking Netherlands Government</title><link href="http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government/" rel="alternate" type="text/html" title="Not Giving-Up : Hacking Netherlands Government" /><published>2024-03-27T00:00:00+05:30</published><updated>2024-03-27T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government/"><![CDATA[<blockquote>
+<p><img src="/assets/logos/appr1.png" alt="first_response" width="400" height="auto" /></p>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[My experience of finding a critical API miconfiguration in the United Nations system which could lead to leak over 1 Million users Personal Identifiable Information.. In this blog post, i’ll explain all the technical part and non-technical parts of it.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">From Coins to Chaos : Business Logic Exploits in LeetCode</title><link href="http://localhost:4000/write-ups/2024/05/28/hacking-leetcode/" rel="alternate" type="text/html" title="From Coins to Chaos : Business Logic Exploits in LeetCode" /><published>2024-05-28T00:00:00+05:30</published><updated>2024-05-28T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/05/28/hacking-leetcode</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/05/28/hacking-leetcode/"><![CDATA[<blockquote>
+  <p>While most people use LeetCode to sharpen their problem-solving skills, I took a different route—digging into its logic. In this blog, I’ll walk you through how I found and responsibly reported three impactful business logic vulnerabilities in LeetCode’s main application - <a href="https://leetcode.com/">leetcode.com</a>. Each case involved clever misuse of logic, and none required complex technical exploits. Just pure understanding of how things shouldn’t work.</p>
+</blockquote>
+
+<h3 id="-case-1-infinite-redemptions-with-limited-leetcoins">🧩 Case 1: Infinite Redemptions with Limited LeetCoins</h3>
+
+<h5 id="-description">📌 Description</h5>
+
+<p>LeetCode offers a store where users can redeem items using “leetcoins.” Logically, if you have 70 leetcoins, you should only be able to redeem one item worth that amount. But due to race condition vulnerabilities, I was able to redeem multiple items with the same coin balance.</p>
+
+<h5 id="-exploit-summary">💥 Exploit Summary</h5>
+
+<p>By intercepting the redemption request and launching it concurrently using Turbo Intruder, I was able to bypass redemption limits.</p>
+
+<h5 id="-steps-to-reproduce">🛠 Steps to Reproduce</h5>
+
+<ul>
+  <li>Start with 70 leetcoins.</li>
+  <li>Intercept the redemption request via any proxy tools.</li>
+  <li>Send it to Turbo Intruder with this script:</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">queueRequests</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">wordlists</span><span class="p">):</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="nc">RequestEngine</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="n">target</span><span class="p">.</span><span class="n">endpoint</span><span class="p">,</span>
+                           <span class="n">concurrentConnections</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                           <span class="n">requestsPerConnection</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                           <span class="n">pipeline</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+        <span class="n">engine</span><span class="p">.</span><span class="nf">queue</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">req</span><span class="p">,</span> <span class="n">target</span><span class="p">.</span><span class="n">baseInput</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="sh">'</span><span class="s">race1</span><span class="sh">'</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="p">.</span><span class="nf">openGate</span><span class="p">(</span><span class="sh">'</span><span class="s">race1</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">engine</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">handleResponse</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">interesting</span><span class="p">):</span>
+    <span class="n">table</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Execute and observe—multiple items get redeemed.</li>
+</ul>
+
+<style>
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<div class="video-container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UHyi9J3xmOY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div>
+
+<h5 id="-impact">🎯 Impact</h5>
+
+<ul>
+  <li>Bypasses monthly limits (e.g. more than 3 time-travel tickets).</li>
+  <li>Can be extended to perks or premium subscriptions.</li>
+  <li>Financial implications for LeetCode.</li>
+</ul>
+
+<hr />
+
+<h3 id="-case-2-free-access-to-premium-content">🔓 Case 2: Free Access to Premium Content</h3>
+
+<h5 id="-description-1">📌 Description</h5>
+
+<p>LeetCode offers premium problems with paid access. However, using a clever frontend trick, I was able to access premium descriptions, discussions, and solutions.</p>
+
+<h5 id="-steps-to-reproduce-1">🛠 Steps to Reproduce</h5>
+
+<ul>
+  <li>Use a non-premium account.</li>
+  <li>Visit any premium problem (e.g. <strong><a href="https://leetcode.com/problems/word-squares/">Word-Squares</a></strong>).</li>
+  <li>Intercept and modify the response—set all parameters to true except <strong><code class="language-plaintext highlighter-rouge">"isPaidOnly": false</code></strong>.</li>
+  <li>To reveal the problem description: Add a note to the problem.</li>
+  <li>Go to your notes section and enable <strong>“Show Description.”</strong></li>
+</ul>
+
+<style>
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<div class="video-container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/R-p11kuCin0?si=gZABuinMSMl8mqcm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div>
+
+<h5 id="-impact-1">🎯 Impact</h5>
+
+<ul>
+  <li>Unauthorized viewing of premium content.</li>
+  <li>Could lead to public leaks and financial damage.</li>
+  <li>Involves only frontend manipulation—no backend auth.</li>
+</ul>
+
+<hr />
+
+<h3 id="-case-3-free-leetcoins-via-profile-update-race-condition">🪙 Case 3: Free LeetCoins via Profile Update Race Condition</h3>
+
+<h5 id="-description-2">📌 Description</h5>
+
+<p>By editing basic profile info (like name or gender) concurrently, I triggered a condition where the application granted leetcoins multiple times for a single update.</p>
+
+<h5 id="-steps-to-reproduce-2">🛠 Steps to Reproduce</h5>
+
+<ul>
+  <li>Create a LeetCode account.</li>
+  <li>Go to the Edit Profile section.</li>
+  <li>Intercept the request and send it to Turbo Intruder.</li>
+  <li>Use this script:</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">queueRequests</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">wordlists</span><span class="p">):</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="nc">RequestEngine</span><span class="p">(</span><span class="n">endpoint</span><span class="o">=</span><span class="n">target</span><span class="p">.</span><span class="n">endpoint</span><span class="p">,</span>
+                           <span class="n">concurrentConnections</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                           <span class="n">requestsPerConnection</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                           <span class="n">pipeline</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">50</span><span class="p">):</span>
+        <span class="n">engine</span><span class="p">.</span><span class="nf">queue</span><span class="p">(</span><span class="n">target</span><span class="p">.</span><span class="n">req</span><span class="p">,</span> <span class="n">target</span><span class="p">.</span><span class="n">baseInput</span><span class="p">,</span> <span class="n">gate</span><span class="o">=</span><span class="sh">'</span><span class="s">race1</span><span class="sh">'</span><span class="p">)</span>
+
+    <span class="n">engine</span><span class="p">.</span><span class="nf">openGate</span><span class="p">(</span><span class="sh">'</span><span class="s">race1</span><span class="sh">'</span><span class="p">)</span>
+    <span class="n">engine</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">handleResponse</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">interesting</span><span class="p">):</span>
+    <span class="n">table</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Set <strong><code class="language-plaintext highlighter-rouge">HTTP/1.1</code></strong> to <strong><code class="language-plaintext highlighter-rouge">HTTP/1.0</code></strong> and mark <strong><code class="language-plaintext highlighter-rouge">%s</code></strong> appropriately.</li>
+  <li>Execute and refresh the profile page —&gt; extra coins added.</li>
+</ul>
+
+<style>
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<div class="video-container">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/q2Fp18B1-Hs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div>
+
+<h5 id="-impact-2">🎯 Impact</h5>
+
+<ul>
+  <li>Generation of coins beyond permitted logic.</li>
+  <li>Can be used to buy perks or affect user rankings.</li>
+  <li>Again, financial damage for the platform.</li>
+</ul>
+
+<hr />
+
+<h4 id="-takeaways">🔍 Takeaways</h4>
+<ul>
+  <li>Business logic flaws are powerful. They exploit what the app allows—not what it protects.</li>
+  <li>Race conditions can occur in unexpected places. Backend validation is a must.</li>
+  <li>Always check what a user is allowed to do logically, not just technically.</li>
+</ul>
+
+<hr />
+
+<h4 id="timeline">TimeLine</h4>
+
+<ul>
+  <li>Cases Submission - 23-May-2024</li>
+  <li>Reports Triaged - 28-May-2024</li>
+  <li>Resolution - 07-Oct-2024</li>
+</ul>
+
+<hr />
+
+<h5 id="my-personal-thought-to-leetcode-and-security-researchers-">My Personal thought to LeetCode and Security Researchers …</h5>
+<ol>
+  <li>
+    <p><strong>For Security Researchers :</strong> Please do not try to perform security research on leetcode infrastructure. My overall experience with this team is horrible and they offer leetcoins as a return of your investment. So don’t expect anything in return.</p>
+  </li>
+  <li>
+    <p><strong>For LeetCode :</strong> Very unprofessional - Dev/Sec Team take huge time to resolve a case (~ 6 months) , Company did not offer any LoA, Swags or anything to security researcher who helped them from a major financial loss. If I want, I can mine millions of leetcoins easily and make a lot of money by unethically selling them or redeeming any swags/goodies, well it’s leetcode…!! (Very Disappointing)</p>
+  </li>
+</ol>]]></content><author><name>Prakhar0x01</name></author><category term="write-ups" /><summary type="html"><![CDATA[While most people use LeetCode to sharpen their problem-solving skills, I took a different route—digging into its logic. In this blog, I’ll walk you through how I found and responsibly reported three impactful business logic vulnerabilities in LeetCode’s main application - [leetcode.com](https://leetcode.com/). Each case involved clever misuse of logic, and none required complex technical exploits. Just pure understanding of how things shouldn't work.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Not Giving-Up : Hacking Netherlands Government</title><link href="http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government/" rel="alternate" type="text/html" title="Not Giving-Up : Hacking Netherlands Government" /><published>2024-03-27T00:00:00+05:30</published><updated>2024-03-27T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government</id><content type="html" xml:base="http://localhost:4000/write-ups/2024/03/27/hacking-dutch-government/"><![CDATA[<blockquote>
   <p>I get rewarded “Dutch Government T-Shirt” for my contribution to their security infrastructure. I’ll explain all the technical part and non-technical parts of it. But before that, I want to tell you why am I proud of it or why the title of this post is “NOT GIVING-UP”.</p>
 </blockquote>
 
@@ -934,227 +1288,4 @@ I was pretty much shocked when they said N/A in every report, but at last, I rep
 
 <h3 id="references">References</h3>
 
-<p><a href="https://www.youtube.com/watch?v=3AlUoe0KXYc">The Philosophy of Karma, Dharma &amp; Oppenheimer</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Philosophy of Failure</title><link href="http://localhost:4000/mindset/2023/11/01/Failure/" rel="alternate" type="text/html" title="Philosophy of Failure" /><published>2023-11-01T00:00:00+05:30</published><updated>2023-11-01T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/11/01/Failure</id><content type="html" xml:base="http://localhost:4000/mindset/2023/11/01/Failure/"><![CDATA[<blockquote>
-  <p>Failure is something everyone experiences, but how we view and deal with it can make all the difference. Let’s break down failure into simple terms and explore how it impacts us both philosophically and psychologically.</p>
-</blockquote>
-
-<h2 id="what-is-failure-">What is Failure ?</h2>
-
-<ul>
-  <li><strong>Basic Definition:</strong>
-    <ul>
-      <li>Failure is the situation when methods and outcomes do not align.</li>
-    </ul>
-  </li>
-  <li><strong>Society Definition:</strong>
-    <ul>
-      <li><strong>Materialistic View:</strong> Eg. Ask career advice from elders, and they may recommend government jobs due to the additional facilities and respect in society beyond just the salary.</li>
-    </ul>
-  </li>
-  <li><strong>Modernity Definition:</strong>
-    <ul>
-      <li><strong>Consumption View:</strong> Eg. You should look rich even if you’re not!</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="psychology-of-failure">Psychology of Failure</h2>
-
-<ul>
-  <li><strong>Rejection Reflection:</strong>
-    <ul>
-      <li>Why does it hurt so much? –&gt; Comparison, validation, appreciation.</li>
-      <li>People don’t see you as they saw you before, so in your mind, your newer version feels lesser than your older version.</li>
-    </ul>
-  </li>
-  <li><strong>Failure Hangover:</strong>
-    <ul>
-      <li>Your mind wants to figure out the lesson from it (which causes long stress/depression); different questions keep coming up in your mind.</li>
-    </ul>
-  </li>
-  <li><strong>Instructive Nature of Failure:</strong>
-    <ul>
-      <li>Every time you’re in the pain of failure –&gt; “Keep your eyes open! There’s a lesson in there,” and you’re seeing the world in hyper-reality.</li>
-    </ul>
-  </li>
-  <li><strong>Unsolved Puzzle:</strong>
-    <ul>
-      <li>Ask yourself questions.</li>
-      <li>Lesson learned for upcoming encounters.</li>
-    </ul>
-  </li>
-  <li><strong>The Last Day Paradox:</strong>
-    <ul>
-      <li>You consider that you’re no longer successful because you think today is the last day.</li>
-    </ul>
-  </li>
-  <li><strong>Learned Helplessness:</strong>
-    <ul>
-      <li>Every time you fail, you think that this pain must be avoided, so the next time your subconscious mind keeps telling you that you’re going to fail again.</li>
-      <li>And you’re not convinced, and the voice becomes stronger than before.</li>
-      <li>When you win –&gt; Serotonin increases in the mind = increased chance of winning.</li>
-      <li>When you lose –&gt; Serotonin decreases in the mind = increased chance of failing.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="on-big-failure">On Big Failure</h2>
-
-<ul>
-  <li>
-    <p><strong>Loss of Instincts:</strong> You are no longer in a condition to handle yourself.</p>
-  </li>
-  <li>
-    <p><strong>Your Base Reality Collapses:</strong> You don’t know how to see yourself or the world.</p>
-  </li>
-  <li>
-    <p><strong>Self-Doubt:</strong> You let other people into your head; in short, you’re brainwashed.</p>
-  </li>
-  <li>
-    <p><strong>Socially Induced Self-Alienation:</strong> Everybody leaves you, even your family members, and you’re alone now.</p>
-  </li>
-</ul>
-
-<h2 id="mind-altering-perspective">Mind-Altering Perspective</h2>
-
-<ul>
-  <li><strong>You Choose What You Fail At:</strong>
-    <ul>
-      <li>Failing in the process is different from failing in outcomes.</li>
-      <li>Desired outcomes based on societal expectations are not necessarily failures.</li>
-    </ul>
-  </li>
-  <li><strong>Asymmetry of Success:</strong>
-    <ul>
-      <li>Focus on the basics.</li>
-      <li>Eg. You don’t know the way to your friend’s house, so:
-        <ul>
-          <li>Every time you ask people in the middle of the way about the landmark –&gt; failure.</li>
-          <li>Your vehicle condition, driving skills –&gt; basics.</li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li><strong>Build a Comfortable Failure Zone:</strong>
-    <ul>
-      <li>Keep enough cash in your pocket.</li>
-      <li>Stay surrounded by people who love you –&gt; family, friends.</li>
-    </ul>
-  </li>
-  <li><strong>Antifragile:</strong>
-    <ul>
-      <li>Every time you fail, ask yourself: “How do I make this failure turn me antifragile?”</li>
-      <li>“How do I make the best out of what I’ve got?”</li>
-    </ul>
-  </li>
-  <li><strong>The Balanced Mindset:</strong>
-    <ul>
-      <li>Try as you mean to succeed.</li>
-      <li>Fail as you mean to fail.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="conclusion">Conclusion</h2>
-<blockquote>
-  <p>Failure isn’t just an end; it’s a chance to learn and grow. By understanding its various aspects and shifting your perspective, you can turn setbacks into stepping stones for success. Embrace failure as a valuable part of your journey and keep moving forward.</p>
-</blockquote>
-
-<h3 id="references">References</h3>
-
-<p><a href="https://www.youtube.com/watch?v=MzV-hqup0Ok">The Philosophy and Psychology of Failure: A Guide to Bouncing Back</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Failure is an inevitable part of life, yet it’s often perceived as a negative endpoint rather than a valuable learning experience. Understanding the nuances of failure, both philosophically and psychologically, can transform how we approach setbacks and help us emerge stronger. Let's delve into the layers of failure and explore how we can shift our perspective to harness its potential.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Masculinity : Beyond the Stereotypes</title><link href="http://localhost:4000/mindset/2023/11/01/Masculinity/" rel="alternate" type="text/html" title="Masculinity : Beyond the Stereotypes" /><published>2023-11-01T00:00:00+05:30</published><updated>2023-11-01T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/11/01/Masculinity</id><content type="html" xml:base="http://localhost:4000/mindset/2023/11/01/Masculinity/"><![CDATA[<blockquote>
-  <p>Masculinity encompasses more than just traditional roles and traits. It’s about taking responsibility, leading, and evolving. This guide explores what masculinity means today, the traits associated with it, and how it contrasts with feminine roles and energy.</p>
-</blockquote>
-
-<h3 id="what-is-masculinity">What is Masculinity?</h3>
-
-<ul>
-  <li>Frame of taking on the traditional role of men on a social level.</li>
-  <li>Mindset to approach the world.</li>
-  <li>Useful for social networking/problem solving.</li>
-  <li>Taking responsibility.</li>
-  <li>Mission-oriented.</li>
-  <li>The protector.</li>
-  <li>The provider.</li>
-  <li>The leader.</li>
-</ul>
-
-<h3 id="traits-of-masculinity">Traits of Masculinity:</h3>
-
-<ul>
-  <li><strong>Strength:</strong> Take responsibility and do it for others.</li>
-  <li><strong>Sacrifice</strong></li>
-  <li><strong>Discipline</strong></li>
-  <li><strong>Endurance</strong></li>
-</ul>
-
-<ol>
-  <li>
-    <p><strong>What about bitches and cars?</strong></p>
-
-    <ul>
-      <li>Marketing tool/strategy.</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Is the point to be the most masculine person ever?</strong></p>
-
-    <ul>
-      <li>No, grow from a boy into a man, i.e., evolve.</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Can women take a masculine role?</strong></p>
-
-    <ul>
-      <li>Yes, they can and they must (at the workplace).</li>
-      <li>E.g., “Feminism.”</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Should men take a feminine role?</strong></p>
-
-    <ul>
-      <li>Yes, it feels alive.</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Is there a biological component to masculinity?</strong></p>
-
-    <ul>
-      <li>Yes, men are more biologically masculine than women.</li>
-      <li>It also depends on environment and exposure.</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Is there such a thing as masculine energy?</strong></p>
-
-    <ul>
-      <li>Yes, but it is more about the brain (because mindset influences energy).</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Why is there a problem with modern masculinity?</strong></p>
-
-    <ul>
-      <li>Your parents and school raised you to focus completely on yourself. Then Twitter/Instagram makes you focus on yourself, i.e., a narcissistically driven society, constantly comparing you and telling you to look at yourself, presenting yourself in stories and reels, and portraying yourself as the smartest person. It is some kind of scene from a movie; it’s not even self-reflection, it is self-objectification.</li>
-    </ul>
-  </li>
-  <li>
-    <p><strong>Difference between masculinity and femininity:</strong></p>
-
-    <ul>
-      <li><strong>Masculinity :</strong> What needs/supposed to be done?</li>
-      <li><strong>Femininity :</strong> What needs to be lived in it (what is happening to me, how much I experience)?</li>
-    </ul>
-  </li>
-</ol>
-
-<h3 id="conclusion">Conclusion</h3>
-<blockquote>
-  <p>Masculinity is more than just traditional roles; it’s about evolving, taking responsibility, and embracing various aspects of both masculine and feminine energies. Understanding these dynamics can help you navigate your personal growth and societal expectations more effectively.</p>
-</blockquote>
-
-<h3 id="references">References</h3>
-
-<p><a href="https://www.youtube.com/watch?v=GgS9Q8zVL2k">WHAT makes YOU embrace MASCULINITY?</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Masculinity encompasses more than just traditional roles and traits. It's about taking responsibility, leading, and evolving. This guide explores what masculinity means today, the traits associated with it, and how it contrasts with feminine roles and energy.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p><a href="https://www.youtube.com/watch?v=3AlUoe0KXYc">The Philosophy of Karma, Dharma &amp; Oppenheimer</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

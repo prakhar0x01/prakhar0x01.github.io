@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2025-08-11T23:55:48+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Exploiting YouTube’s Permission Model : A Privilege Escalation case</title><link href="http://localhost:4000/write-ups/2025/08/11/hacking-google/" rel="alternate" type="text/html" title="Exploiting YouTube’s Permission Model : A Privilege Escalation case" /><published>2025-08-11T00:00:00+05:30</published><updated>2025-08-11T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2025/08/11/hacking-google</id><content type="html" xml:base="http://localhost:4000/write-ups/2025/08/11/hacking-google/"><![CDATA[<hr />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2025-08-12T00:16:59+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Exploiting YouTube’s Permission Model : A Privilege Escalation case</title><link href="http://localhost:4000/write-ups/2025/08/11/hacking-google/" rel="alternate" type="text/html" title="Exploiting YouTube’s Permission Model : A Privilege Escalation case" /><published>2025-08-11T00:00:00+05:30</published><updated>2025-08-11T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2025/08/11/hacking-google</id><content type="html" xml:base="http://localhost:4000/write-ups/2025/08/11/hacking-google/"><![CDATA[<hr />
 
 <h5 id="this-issue-was-responsibly-reported-to-google-and-has-been-confirmed-fixed-thanks-to-the-google-security-team-for-their-cooperation">This issue was responsibly reported to Google and has been confirmed fixed. Thanks to the Google security team for their cooperation.</h5>
 
@@ -6,7 +6,7 @@
 
 <hr />
 
-<h3 id="my-approach">My Approach?</h3>
+<h4 id="my-approach">My Approach?</h4>
 
 <p>1 - My approach does not involves reconnaissance, instead focusing directly on the main application.</p>
 
@@ -14,23 +14,25 @@
 
 <p>3 - After spending 2-3 hours examining the permission model without notable findings, I shifted attention to accounts with lower privileges, which led to the discovery of this privilege escalation Issue.</p>
 
-<h3 id="affected-product">Affected Product</h3>
+<h4 id="affected-product">Affected Product</h4>
 <ul>
   <li><a href="https://studio.youtube.com/">YouTube Studio</a> — Channel Management Console</li>
 </ul>
 
-<h3 id="vulnerability-type">Vulnerability Type</h3>
+<h4 id="vulnerability-type">Vulnerability Type</h4>
 <ul>
   <li>Privilege Escalation</li>
   <li>Role-Based Access Control Bypass</li>
 </ul>
 
-<h3 id="severity">Severity</h3>
+<h4 id="severity">Severity</h4>
 <ul>
   <li>Medium 🟡</li>
 </ul>
 
-<h3 id="description">Description</h3>
+<hr />
+
+<h4 id="-description">📌 Description</h4>
 <ul>
   <li>The <a href="https://support.google.com/youtube/answer/9481328#:~:text=Subtitle%20Editor,-Can%20add%2C%20edit">Subtitle Editor role on YouTube Studio</a> is intended only for adding and editing subtitles on assigned videos.</li>
 </ul>
@@ -46,9 +48,9 @@
   </li>
 </ul>
 
-<h3 id="reproduction-steps">Reproduction Steps</h3>
+<h4 id="--reproduction-steps">🛠  Reproduction Steps</h4>
 
-<h5 id="as-the-channel-owner-user-a">As the Channel Owner (User-A):</h5>
+<h6 id="as-the-channel-owner-user-a">As the Channel Owner (User-A):</h6>
 
 <ul>
   <li>Create a YouTube channel.</li>
@@ -56,7 +58,7 @@
   <li>Upload one or more Private videos to the channel.</li>
 </ul>
 
-<h5 id="as-the-subtitle-editor-user-b">As the Subtitle Editor (User-B):</h5>
+<h6 id="as-the-subtitle-editor-user-b">As the Subtitle Editor (User-B):</h6>
 
 <ul>
   <li>Log in to YouTube Studio and navigate to the Subtitles tab.</li>
@@ -64,7 +66,7 @@
   <li>Use a crafted API request to YouTube’s internal browse endpoint to retrieve detailed video and channel data, including total viewership metrics.</li>
 </ul>
 
-<h5 id="vulnerable-request">Vulnerable Request</h5>
+<h6 id="vulnerable-request">Vulnerable Request</h6>
 
 <div class="language-http highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">POST</span> <span class="nn">/youtubei/v1/browse?prettyPrint=false</span> <span class="k">HTTP</span><span class="o">/</span><span class="m">2</span>
 <span class="na">Host</span><span class="p">:</span> <span class="s">www.youtube.com</span>
@@ -86,7 +88,7 @@
   <p>This request returned analytics data and private video information, which should have been inaccessible to the Subtitle Editor.</p>
 </blockquote>
 
-<h3 id="expected-behavior">Expected Behavior</h3>
+<h4 id="expected-behavior">Expected Behavior</h4>
 <ul>
   <li>
     <p>Subtitle Editors should only be able to add or edit subtitles on videos they are explicitly allowed to manage.</p>
@@ -99,34 +101,57 @@
   </li>
 </ul>
 
-<h3 id="proof-of-concept">Proof Of Concept</h3>
+<h4 id="proof-of-concept">Proof Of Concept</h4>
 
+<p><br /></p>
+
+<style>
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+
+<div class="video-container">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/N_Sw4ajOvYs?si=9XUwum65G-wOlhZR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+</div>
 
-<h3 id="impact--risk">Impact &amp; Risk</h3>
+<p><br /></p>
+<h4 id="-impact--risk">💥 Impact &amp; Risk</h4>
 <ul>
   <li>
-    <p>Exposure of confidential unpublished content: Private videos intended for internal review or embargoed releases become visible to lower-privileged users.</p>
+    <p><strong>Exposure of confidential unpublished content:</strong> Private videos intended for internal review or embargoed releases become visible to lower-privileged users.</p>
   </li>
   <li>
-    <p>Leak of sensitive analytics data: Total channel viewership and performance metrics could give competitors unfair insights or lead to insider leaks.</p>
+    <p><strong>Leak of sensitive analytics data:</strong> Total channel viewership and performance metrics could give competitors unfair insights or lead to insider leaks.</p>
   </li>
   <li>
-    <p>Role-based access control failure: Undermines trust in YouTube Studio’s permission system, potentially causing operational risks for content creators.</p>
+    <p><strong>Role-based access control failure:</strong> Undermines trust in YouTube Studio’s permission system, potentially causing operational risks for content creators.</p>
   </li>
 </ul>
 
-<h3 id="real-world-scenario">Real-World Scenario</h3>
+<h4 id="real-world-scenario">Real-World Scenario</h4>
 <ul>
   <li>Imagine a tech company preparing a highly confidential product launch on YouTube. They assign subtitle editors to finalize captioning on unrelated videos. These subtitle editors, due to this vulnerability, can access the unreleased launch videos and associated performance metrics, potentially leaking sensitive information externally.</li>
 </ul>
 
-<h3 id="conclusion">Conclusion</h3>
+<h4 id="conclusion">Conclusion</h4>
 <ul>
   <li>Thanks to GoogleVRP, Google has since fixed the issue, improving the security posture of YouTube Studio for millions of creators worldwide.</li>
 </ul>
 
-<h4 id="timeline">Timeline</h4>
+<h5 id="timeline">Timeline</h5>
 <ul>
   <li>Reported -&gt; 27/Apr/2025</li>
   <li>Triaged  -&gt; 27/Apr/2025</li>

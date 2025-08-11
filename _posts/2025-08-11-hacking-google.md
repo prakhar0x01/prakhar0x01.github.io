@@ -15,7 +15,7 @@ image: "https://picsum.photos/2560/600?image=733"
 
 ---
 
-### My Approach?
+#### My Approach?
 
 1 - My approach does not involves reconnaissance, instead focusing directly on the main application.
 
@@ -24,17 +24,20 @@ image: "https://picsum.photos/2560/600?image=733"
 3 - After spending 2-3 hours examining the permission model without notable findings, I shifted attention to accounts with lower privileges, which led to the discovery of this privilege escalation Issue.
 
 
-### Affected Product
+#### Affected Product
 - [YouTube Studio](https://studio.youtube.com/) — Channel Management Console
 
-### Vulnerability Type
+#### Vulnerability Type
 - Privilege Escalation
 - Role-Based Access Control Bypass
 
-### Severity
+#### Severity
 - Medium 🟡
 
-### Description
+
+---
+
+#### 📌 Description
 - The [Subtitle Editor role on YouTube Studio](https://support.google.com/youtube/answer/9481328#:~:text=Subtitle%20Editor,-Can%20add%2C%20edit) is intended only for adding and editing subtitles on assigned videos. 
 
 <img src="/assets/logos/permission_model.png" alt="permission_model" width="1000" height="auto">
@@ -44,21 +47,21 @@ image: "https://picsum.photos/2560/600?image=733"
     - Access total channel viewership metrics, exposing sensitive analytics data normally reserved for owners or managers
 
 
-### Reproduction Steps
+#### 🛠  Reproduction Steps
 
-##### As the Channel Owner (User-A):
+###### As the Channel Owner (User-A):
 
 - Create a YouTube channel.
 - Invite a user (User-B) and assign them the Subtitle Editor role.
 - Upload one or more Private videos to the channel.
 
-##### As the Subtitle Editor (User-B):
+###### As the Subtitle Editor (User-B):
 
 - Log in to YouTube Studio and navigate to the Subtitles tab.
 - Notice that private videos are listed and accessible.
 - Use a crafted API request to YouTube’s internal browse endpoint to retrieve detailed video and channel data, including total viewership metrics.
 
-##### Vulnerable Request
+###### Vulnerable Request
 
 ```http
 POST /youtubei/v1/browse?prettyPrint=false HTTP/2
@@ -80,31 +83,53 @@ Priority: u=1, i
 > This request returned analytics data and private video information, which should have been inaccessible to the Subtitle Editor.
 
 
-### Expected Behavior
+#### Expected Behavior
 - Subtitle Editors should only be able to add or edit subtitles on videos they are explicitly allowed to manage.
 
 - They should not see videos marked as Private unless explicitly shared.
 
 - Analytics and total viewership metrics must be strictly restricted to channel Owners/Managers.
 
-### Proof Of Concept
+#### Proof Of Concept
 
+<br>
+
+<style>
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+</style>
+<div class="video-container">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/N_Sw4ajOvYs?si=9XUwum65G-wOlhZR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
-### Impact & Risk
-- Exposure of confidential unpublished content: Private videos intended for internal review or embargoed releases become visible to lower-privileged users.
+<br>
+#### 💥 Impact & Risk
+- **Exposure of confidential unpublished content:** Private videos intended for internal review or embargoed releases become visible to lower-privileged users.
 
-- Leak of sensitive analytics data: Total channel viewership and performance metrics could give competitors unfair insights or lead to insider leaks.
+- **Leak of sensitive analytics data:** Total channel viewership and performance metrics could give competitors unfair insights or lead to insider leaks.
 
-- Role-based access control failure: Undermines trust in YouTube Studio’s permission system, potentially causing operational risks for content creators.
+- **Role-based access control failure:** Undermines trust in YouTube Studio’s permission system, potentially causing operational risks for content creators.
 
-### Real-World Scenario
+#### Real-World Scenario
 - Imagine a tech company preparing a highly confidential product launch on YouTube. They assign subtitle editors to finalize captioning on unrelated videos. These subtitle editors, due to this vulnerability, can access the unreleased launch videos and associated performance metrics, potentially leaking sensitive information externally.
 
-### Conclusion
+#### Conclusion
 - Thanks to GoogleVRP, Google has since fixed the issue, improving the security posture of YouTube Studio for millions of creators worldwide.
 
-#### Timeline
+##### Timeline
 - Reported -> 27/Apr/2025
 - Triaged  -> 27/Apr/2025
 - Need More Info -> 07/May/2025

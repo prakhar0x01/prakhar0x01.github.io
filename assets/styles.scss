@@ -3,4 +3,14 @@ title: false
 styles: true
 ---
 
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap');
+
 @import "alembic";
+
+
+body {
+  font-family: 'Rubik', -apple-system, BlinkMacSystemFont,
+               'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+

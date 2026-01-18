@@ -15,6 +15,12 @@ image: "https://picsum.photos/2560/600?image=733"
 3. [**#2587953** : Email Takeover leads to Permanent Account Deletion](https://hackerone.com/reports/2587953)
 4. [**#2586641** : IDOR leads to view any user Biographical Details](https://hackerone.com/reports/2586641)
 5. [**#2586584** : IDOR leads to PII Leak](https://hackerone.com/reports/2586584)
+6. [**#2587844** : Cross Site Scripting at ██████](https://hackerone.com/reports/2587844)
+7. [**#2697588** : CSRF Attack leads to delete album at ██████](https://hackerone.com/reports/2697588)
+8. [**#2652190** : CSRF Attack leads to delete album at ██████](https://hackerone.com/reports/2652190)
+9. [**#2652603** : CSRF Attack on changing security questions leads to full Account TakeOver](https://hackerone.com/reports/2652603)
+
+
 
 ### My Initial Approach?
 

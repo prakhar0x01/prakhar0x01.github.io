@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2025-08-12T00:16:59+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Exploiting YouTube’s Permission Model : A Privilege Escalation case</title><link href="http://localhost:4000/write-ups/2025/08/11/hacking-google/" rel="alternate" type="text/html" title="Exploiting YouTube’s Permission Model : A Privilege Escalation case" /><published>2025-08-11T00:00:00+05:30</published><updated>2025-08-11T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2025/08/11/hacking-google</id><content type="html" xml:base="http://localhost:4000/write-ups/2025/08/11/hacking-google/"><![CDATA[<hr />
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en-GB"><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en-GB" /><updated>2026-01-18T19:32:31+05:30</updated><id>http://localhost:4000/feed.xml</id><title type="html">Prakhar0x01</title><subtitle>An Ordinary guy in the way to become Extra-Ordinary.</subtitle><author><name>Prakhar0x01</name></author><entry><title type="html">Exploiting YouTube’s Permission Model : A Privilege Escalation case</title><link href="http://localhost:4000/write-ups/2025/08/11/hacking-google/" rel="alternate" type="text/html" title="Exploiting YouTube’s Permission Model : A Privilege Escalation case" /><published>2025-08-11T00:00:00+05:30</published><updated>2025-08-11T00:00:00+05:30</updated><id>http://localhost:4000/write-ups/2025/08/11/hacking-google</id><content type="html" xml:base="http://localhost:4000/write-ups/2025/08/11/hacking-google/"><![CDATA[<hr />
 
 <h5 id="this-issue-was-responsibly-reported-to-google-and-has-been-confirmed-fixed-thanks-to-the-google-security-team-for-their-cooperation">This issue was responsibly reported to Google and has been confirmed fixed. Thanks to the Google security team for their cooperation.</h5>
 
@@ -306,6 +306,10 @@
       <li><a href="https://hackerone.com/reports/2587953"><strong>#2587953</strong> : Email Takeover leads to Permanent Account Deletion</a></li>
       <li><a href="https://hackerone.com/reports/2586641"><strong>#2586641</strong> : IDOR leads to view any user Biographical Details</a></li>
       <li><a href="https://hackerone.com/reports/2586584"><strong>#2586584</strong> : IDOR leads to PII Leak</a></li>
+      <li><a href="https://hackerone.com/reports/2587844"><strong>#2587844</strong> : Cross Site Scripting at ██████</a></li>
+      <li><a href="https://hackerone.com/reports/2697588"><strong>#2697588</strong> : CSRF Attack leads to delete album at ██████</a></li>
+      <li><a href="https://hackerone.com/reports/2652190"><strong>#2652190</strong> : CSRF Attack leads to delete album at ██████</a></li>
+      <li><a href="https://hackerone.com/reports/2652603"><strong>#2652603</strong> : CSRF Attack on changing security questions leads to full Account TakeOver</a></li>
     </ol>
   </li>
 </ul>
@@ -1111,98 +1115,7 @@ I was pretty much shocked when they said N/A in every report, but at last, I rep
 
 <h3 id="references">References</h3>
 
-<p><a href="https://www.youtube.com/watch?v=lmxy93ibM2M">The Philosophy of Reality</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Reality is a multifaceted concept which is more than just what we see or experience. It consists of different layers, from objective facts to subjective interpretations. This guide explores the various dimensions of reality and how they influence our understanding of the world.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">FriendZone : The wrong Investment.</title><link href="http://localhost:4000/mindset/2023/12/30/FriendZone/" rel="alternate" type="text/html" title="FriendZone : The wrong Investment." /><published>2023-12-30T00:00:00+05:30</published><updated>2023-12-30T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/12/30/FriendZone</id><content type="html" xml:base="http://localhost:4000/mindset/2023/12/30/FriendZone/"><![CDATA[<blockquote>
-  <p>The FriendZone is a common yet complex scenario where emotional investment doesn’t lead to a romantic relationship. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.</p>
-</blockquote>
-
-<h2 id="friend-zone">Friend Zone</h2>
-<blockquote>
-  <p><strong>suffer mostly men, because women are mainly “friends with benefits” (any kind of)’</strong></p>
-</blockquote>
-
-<ul>
-  <li>
-    <p><strong>Definition:</strong> When a guy gives, gives, and gives for a very long time emotionally available, attentive, solving all her problems, and being the giver, until he finally tells her, “I like/love you!” and she looks back at him and says, “Listen, I like you too, but as a friend!” This often wrecks the guy.</p>
-  </li>
-  <li>
-    <p>Friend zone truly shakes up the guys and the things around him.</p>
-  </li>
-</ul>
-
-<h2 id="why-does-the-friend-zone-happen">Why Does the Friend Zone Happen?</h2>
-
-<ul>
-  <li>
-    <p><strong>You’re not just attractive enough</strong> (rejection).</p>
-  </li>
-  <li><strong>Unable to ‘Fit In’</strong> (women call it ‘chemistry’):
-    <ul>
-      <li>Women might feel that the guy is giving more friendly vibes than romantic vibes.</li>
-    </ul>
-  </li>
-  <li><strong>Not her ‘type’</strong> (Rejection):
-    <ul>
-      <li>Various conditions like she might have recently broken up with her ex, family doesn’t approve, career, etc.</li>
-    </ul>
-  </li>
-</ul>
-
-<h2 id="chemistry">Chemistry</h2>
-
-<ul>
-  <li>
-    <p><strong>Chemistry</strong> is what a women might say she didn’t find when she is about to friend zone you.</p>
-  </li>
-  <li>
-    <p>Chemistry is the ability to get her heart/attention and play with it in reality.</p>
-  </li>
-</ul>
-
-<h3 id="how-to-get-her-attentionheart"><strong>How to get her attention/heart?</strong></h3>
-
-<ol>
-  <li><strong>Express Your Intent Early:</strong> Includes giving compliments/flirting, etc.</li>
-  <li>
-    <p><strong>Being a Bad Boy (or less nice):</strong> Girls psychologically want men better than them. If a man is blindly accommodating for her, she may not be interested because he then becomes cheap to her.</p>
-
-    <ul>
-      <li>You can disagree with her sometimes (not always).</li>
-      <li>Don’t always be available for her.</li>
-      <li>Tease her.</li>
-    </ul>
-  </li>
-  <li><strong>Adventure:</strong> Shared emotional reality; go on actual dates rather than always sipping coffee or chatting/calling.</li>
-  <li><strong>Be a Fast-Moving Man:</strong> A man should have both passion and drive (indirect tension builder).</li>
-  <li><strong>Play:</strong> Laugh with her or crack jokes about illogical things.</li>
-  <li><strong>Tell a Good Story:</strong> Shared emotional reality (pinnacle art of conversation).</li>
-  <li><strong>Provide Exclusive Access:</strong> Invite her to parties, rides, or offer emotional support by asking about her insecurities.</li>
-</ol>
-
-<h2 id="strategy-for-men">Strategy for Men</h2>
-
-<ul>
-  <li>
-    <p><strong>Express Intent in 1-4 Weeks:</strong> Or after you’ve had sufficient interaction.</p>
-  </li>
-  <li>
-    <p><strong>Express as Much as You Feel:</strong> In the dating economic world, where you’re negotiating for each other’s company, overcommitting or over-bargaining undervalues yourself.</p>
-  </li>
-  <li>
-    <p><strong>Ask the Woman What Kind of Man She Likes:</strong> Most likely, she’ll describe the most obvious qualities about you. If she doesn’t, you should move on.</p>
-  </li>
-  <li>
-    <p><strong>Don’t Be Afraid of Losing Her:</strong> Being afraid of losing her can lead to becoming a bad negotiator, which can result in bad chemistry or no chemistry, leading to rejection.</p>
-  </li>
-</ul>
-
-<h3 id="conclusion">Conclusion</h3>
-<blockquote>
-  <p>Navigating the FriendZone can be challenging and emotionally taxing. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.</p>
-</blockquote>
-
-<h3 id="references">References</h3>
-
-<p><a href="https://www.youtube.com/watch?v=sXZxBdEKkQs">FriendZone : Solved</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[The FriendZone is a common yet complex scenario where emotional investment doesn't lead to a romantic relationship. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Philosophy of Oppenheimer</title><link href="http://localhost:4000/mindset/2023/12/30/Oppenheimer/" rel="alternate" type="text/html" title="Philosophy of Oppenheimer" /><published>2023-12-30T00:00:00+05:30</published><updated>2023-12-30T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/12/30/Oppenheimer</id><content type="html" xml:base="http://localhost:4000/mindset/2023/12/30/Oppenheimer/"><![CDATA[<blockquote>
+<p><a href="https://www.youtube.com/watch?v=lmxy93ibM2M">The Philosophy of Reality</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Reality is a multifaceted concept which is more than just what we see or experience. It consists of different layers, from objective facts to subjective interpretations. This guide explores the various dimensions of reality and how they influence our understanding of the world.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Philosophy of Oppenheimer</title><link href="http://localhost:4000/mindset/2023/12/30/Oppenheimer/" rel="alternate" type="text/html" title="Philosophy of Oppenheimer" /><published>2023-12-30T00:00:00+05:30</published><updated>2023-12-30T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/12/30/Oppenheimer</id><content type="html" xml:base="http://localhost:4000/mindset/2023/12/30/Oppenheimer/"><![CDATA[<blockquote>
   <p>Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer’s views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.</p>
 </blockquote>
 
@@ -1313,4 +1226,95 @@ I was pretty much shocked when they said N/A in every report, but at last, I rep
 
 <h3 id="references">References</h3>
 
-<p><a href="https://www.youtube.com/watch?v=3AlUoe0KXYc">The Philosophy of Karma, Dharma &amp; Oppenheimer</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+<p><a href="https://www.youtube.com/watch?v=3AlUoe0KXYc">The Philosophy of Karma, Dharma &amp; Oppenheimer</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">FriendZone : The wrong Investment.</title><link href="http://localhost:4000/mindset/2023/12/30/FriendZone/" rel="alternate" type="text/html" title="FriendZone : The wrong Investment." /><published>2023-12-30T00:00:00+05:30</published><updated>2023-12-30T00:00:00+05:30</updated><id>http://localhost:4000/mindset/2023/12/30/FriendZone</id><content type="html" xml:base="http://localhost:4000/mindset/2023/12/30/FriendZone/"><![CDATA[<blockquote>
+  <p>The FriendZone is a common yet complex scenario where emotional investment doesn’t lead to a romantic relationship. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.</p>
+</blockquote>
+
+<h2 id="friend-zone">Friend Zone</h2>
+<blockquote>
+  <p><strong>suffer mostly men, because women are mainly “friends with benefits” (any kind of)’</strong></p>
+</blockquote>
+
+<ul>
+  <li>
+    <p><strong>Definition:</strong> When a guy gives, gives, and gives for a very long time emotionally available, attentive, solving all her problems, and being the giver, until he finally tells her, “I like/love you!” and she looks back at him and says, “Listen, I like you too, but as a friend!” This often wrecks the guy.</p>
+  </li>
+  <li>
+    <p>Friend zone truly shakes up the guys and the things around him.</p>
+  </li>
+</ul>
+
+<h2 id="why-does-the-friend-zone-happen">Why Does the Friend Zone Happen?</h2>
+
+<ul>
+  <li>
+    <p><strong>You’re not just attractive enough</strong> (rejection).</p>
+  </li>
+  <li><strong>Unable to ‘Fit In’</strong> (women call it ‘chemistry’):
+    <ul>
+      <li>Women might feel that the guy is giving more friendly vibes than romantic vibes.</li>
+    </ul>
+  </li>
+  <li><strong>Not her ‘type’</strong> (Rejection):
+    <ul>
+      <li>Various conditions like she might have recently broken up with her ex, family doesn’t approve, career, etc.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="chemistry">Chemistry</h2>
+
+<ul>
+  <li>
+    <p><strong>Chemistry</strong> is what a women might say she didn’t find when she is about to friend zone you.</p>
+  </li>
+  <li>
+    <p>Chemistry is the ability to get her heart/attention and play with it in reality.</p>
+  </li>
+</ul>
+
+<h3 id="how-to-get-her-attentionheart"><strong>How to get her attention/heart?</strong></h3>
+
+<ol>
+  <li><strong>Express Your Intent Early:</strong> Includes giving compliments/flirting, etc.</li>
+  <li>
+    <p><strong>Being a Bad Boy (or less nice):</strong> Girls psychologically want men better than them. If a man is blindly accommodating for her, she may not be interested because he then becomes cheap to her.</p>
+
+    <ul>
+      <li>You can disagree with her sometimes (not always).</li>
+      <li>Don’t always be available for her.</li>
+      <li>Tease her.</li>
+    </ul>
+  </li>
+  <li><strong>Adventure:</strong> Shared emotional reality; go on actual dates rather than always sipping coffee or chatting/calling.</li>
+  <li><strong>Be a Fast-Moving Man:</strong> A man should have both passion and drive (indirect tension builder).</li>
+  <li><strong>Play:</strong> Laugh with her or crack jokes about illogical things.</li>
+  <li><strong>Tell a Good Story:</strong> Shared emotional reality (pinnacle art of conversation).</li>
+  <li><strong>Provide Exclusive Access:</strong> Invite her to parties, rides, or offer emotional support by asking about her insecurities.</li>
+</ol>
+
+<h2 id="strategy-for-men">Strategy for Men</h2>
+
+<ul>
+  <li>
+    <p><strong>Express Intent in 1-4 Weeks:</strong> Or after you’ve had sufficient interaction.</p>
+  </li>
+  <li>
+    <p><strong>Express as Much as You Feel:</strong> In the dating economic world, where you’re negotiating for each other’s company, overcommitting or over-bargaining undervalues yourself.</p>
+  </li>
+  <li>
+    <p><strong>Ask the Woman What Kind of Man She Likes:</strong> Most likely, she’ll describe the most obvious qualities about you. If she doesn’t, you should move on.</p>
+  </li>
+  <li>
+    <p><strong>Don’t Be Afraid of Losing Her:</strong> Being afraid of losing her can lead to becoming a bad negotiator, which can result in bad chemistry or no chemistry, leading to rejection.</p>
+  </li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<blockquote>
+  <p>Navigating the FriendZone can be challenging and emotionally taxing. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.</p>
+</blockquote>
+
+<h3 id="references">References</h3>
+
+<p><a href="https://www.youtube.com/watch?v=sXZxBdEKkQs">FriendZone : Solved</a></p>]]></content><author><name>Prakhar0x01</name></author><category term="Mindset" /><summary type="html"><![CDATA[The FriendZone is a common yet complex scenario where emotional investment doesn't lead to a romantic relationship. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="https://picsum.photos/2560/600?image=733" /><media:content medium="image" url="https://picsum.photos/2560/600?image=733" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>

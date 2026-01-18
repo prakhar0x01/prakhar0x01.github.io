@@ -1,18 +1,24 @@
 ---
 title: About Me
 feature_text: |
-  ## prakhar0x01 (Ghost 💀)
+  ## prakhar0x01 (Ghost)
   An Ordinary guy in the way to become Extra-Ordinary.
 feature_image: "https://hougumlaw.com/wp-content/uploads/2016/05/light-website-backgrounds-light-color-background-images-light-color-background-images-for-website-1024x640.jpg"
 excerpt: "I'm Ghost 💀. Just another internet Hacker. Hacked United Nations, US Dept. Of Defence, NASA, Netherlands Government and more. Interest in Gaming (Call Of Duty, Valorant, Counter Strike), Psychology & Philosophy, mental health & last but not least Cars."
 ---
 
-I'm Prakhar, internet often know me as **[Ghost 💀](https://x.com/prakhar0x01).** 
+- I'm Prakhar, internet often know me as **[prakhar0x01 (Ghost)](https://x.com/prakhar0x01).** 
 
-I've responsibly disclosed my exploitations with organizations including the US Dept. Of Defence, NASA, Google, Netherlands Government, United Nations, Sony, LeetCode, TradingView, Groww, Stanford University, Starbucks and more(<code style="color: red;">Confidential</code>). 
-Currently in the way to work with more like them.
+- Reported and responsibly disclosed 100+ valid security vulnerabilities across large-scale
+production systems, resulting in security fixes across Fortune 500 and government organizations
+including Google, United Nations, Sony, Starbucks, US Department Of Defence and more..(confidential).
 
-Addtionally, I'm Interested in Gaming, Psychology & Philosophy, Mental Health, DarkWeb and more. I occasionally play CTFs on [TryHackMe](https://tryhackme.com/p/PrakharPorwal) & [HackingHub](https://hackinghub.io/). So ping me, If you're interested in collaborating or just want to chat about any of these topics, feel free to reach out!
+- Identified and responsibly disclosed high-impact vulnerabilities including RCE, IDOR, auth bypass,
+privilege escalation, SSRF, and PII exposure(1M+ users) in real-world environments.
+
+- CVE author with 5 assigned CVEs affecting widely used software (2025). Top 5% on TryHackMe Platform.Ranked among Top 100 security researchers in India (2025) on HackerOne leaderboards
+
+- Addtionally, I'm Interested in Gaming, Psychology & Philosophy, Aviation, DarkWeb and more. I occasionally play CTFs on [TryHackMe](https://tryhackme.com/p/PrakharPorwal) & [HackingHub](https://hackinghub.io/). So ping me, If you're interested in collaborating or just want to discuss about any of these topics, feel free to reach out!
 
 ---
 
@@ -85,24 +91,64 @@ Addtionally, I'm Interested in Gaming, Psychology & Philosophy, Mental Health, D
 
 ## Projects ...
 
-##### 1. [Xpose](https://github.com/prakhar0x01/xpose) - Deanonymization Simulation on DarkWeb Operators 
+##### 1. [Deceptor](https://github.com/prakhar0x01/deceptor) - An automated script to discover and bypass Web-Cache Deception 
 
- Xpose is a powerful software simulation for performing advanced deanonymization techniques, designed to trace the operators behind illegal dark web sites. The system includes both a web app and CLI (Command Line Interface) to offer flexibility and reliability. 
+An automated script to discover and bypass Web-Cache Deception
 
-[Project Link : Xpose](https://github.com/prakhar0x01/xpose)
+[Project Link : Deceptor](https://github.com/prakhar0x01/Deceptor)
 
-##### 2. [TorNet Granted](https://github.com/prakhar0x01/Tornet_Granted) - Enumerating Onion URLs
+
+##### 2. [Approach](https://github.com/prakhar0x01/Approach) - An automated script to perform daily recon tasks 
+
+Approach is a beginner-friendly script that condenses manual reconnaissance into a single command. By orchestrating popular tools, it automatically filters for live targets and identifies high-value assets like login portals.
+Designed for speed and precision, so you can focus on finding vulnerabilities rather than running scripts.
+
+[Project Link : Approach](https://github.com/prakhar0x01/approach)
+
+##### 3. [TorNet Granted](https://github.com/prakhar0x01/Tornet_Granted) - Enumerating Onion URLs
 
  Python-based web application project for exploring and analyzing the dark web within the TOR (The Onion Router) network. With a focus on threat intelligence and cybersecurity, our software provides a user-friendly interface for discovering, validating & analyzing onion URLs, DOM rendering, Enumerating Onion URLs and scheduling automated tasks init.
 
 [Project Link : Tornet Granted](https://github.com/prakhar0x01/Tornet_Granted)
 
----
+##### 4. [Xpose](https://github.com/prakhar0x01/xpose) - Deanonymization Simulation on DarkWeb Operators 
+
+ Xpose is a powerful software simulation for performing advanced deanonymization techniques, designed to trace the operators behind illegal dark web sites. The system includes both a web app and CLI (Command Line Interface) to offer flexibility and reliability. 
+
+[Project Link : Xpose](https://github.com/prakhar0x01/xpose)
+
+
+----
+
+
+
+## Licenses & Certifications
+
+| **Certification**                                         | **Issued** |       |      |**Issuing Organisation**  |
+|-----------------------------------------------------------|------------|-------|------|------------------------|
+| Penetration Testing                                       | Sep 2022   |       |      | Charles Struts University |
+| Certified In CyberSecurity                                | Oct 2022   |       |      |       ISC2             |
+| Certified AppSec Practitioner                             | Jan 2023   |       |      | The SecOps Group         |
+| National Finalist - Smart India Hackathon (SIH)           | Dec 2023   |       |      | Government Of India       |
+| National Finalist - Pentathon 2024                        | Mar 2024   |       |      | Government Of India       |
+| National Finalist - Pentathon 2025                        | Apr 2025   |       |      | Government Of India       |
+| CVE-2025-64489                                            | Nov 2025   |       |      | SuiteCRM                  |
+| CVE-2025-64490                                            | Nov 2025   |       |      | SuiteCRM                  |
+
+----
+
+
 
 ## Testimonials...
 <img src="/assets/logos/testimonial.png" alt="testimonial">
+<img src="/assets/logos/testimonial1.png" alt="testimonial">
 
----
+
+
+
+
+----
+
 
 ## Explore ...
 > Interested in exploring some of my work? Here are a few resources:

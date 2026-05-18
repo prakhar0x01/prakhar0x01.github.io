@@ -4,7 +4,7 @@ categories:
 - write-ups
 excerpt: |
   My experience of finding a critical API miconfiguration in the United Nations system which could lead to leak over 1 Million users Personal Identifiable Information.. In this blog post, i’ll explain all the technical part and non-technical parts of it.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/un-pii-leak/2560/600"
 ---
 
 > My Experience of hacking into United Nations & finding a critical API misconfiguration in their systems which could lead to leak over 1 Million users PII. In this blog post, I’ll explain all the technical part and non-technical parts of it.

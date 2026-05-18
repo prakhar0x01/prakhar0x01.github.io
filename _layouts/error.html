@@ -1,0 +1,389 @@
+---
+layout: default
+---
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:     #080c10;
+  --bg2:    #0d1117;
+  --bg3:    #161b22;
+  --border: #21262d;
+  --accent: #00ff88;
+  --accent2:#4493f8;
+  --red:    #ff4757;
+  --text:   #e6edf3;
+  --text2:  #8b949e;
+  --text3:  #7d8590;
+  --mono:   'JetBrains Mono', 'Fira Code', monospace;
+  --sans:   'Inter', system-ui, sans-serif;
+  --r:      8px;
+}
+
+.er { all: initial; display: block; font-family: var(--sans); }
+.er *, .er *::before, .er *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.er {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+body.layout-error {
+  background: var(--bg) !important;
+  margin: 0; padding: 0;
+}
+body.layout-error > header,
+body.layout-error > footer,
+body.layout-error > .main { display: none !important; }
+
+/* background grid */
+.er::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 55px 55px;
+  pointer-events: none;
+}
+/* centered glow */
+.er::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse 70% 60% at 50% 30%, rgba(255,71,87,0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* NAV */
+.er-nav {
+  position: relative;
+  z-index: 10;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5vw;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8,12,16,0.9);
+  backdrop-filter: blur(14px);
+}
+.er-nav__logo {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.er-nav__logo::before { content: '> '; color: var(--text3); font-weight: 400; }
+.er-nav__links { display: flex; gap: 1.5rem; list-style: none; }
+.er-nav__links a {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  color: var(--text2);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.er-nav__links a:hover { color: var(--accent); }
+
+/* MAIN */
+.er-body {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+/* 404 glitch number */
+.er-code {
+  font-family: var(--mono);
+  font-size: clamp(7rem, 20vw, 14rem);
+  font-weight: 700;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,71,87,0.5);
+  letter-spacing: -4px;
+  margin-bottom: 0;
+  position: relative;
+  animation: glitch 4s infinite;
+  user-select: none;
+}
+.er-code::before,
+.er-code::after {
+  content: '404';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  font-family: var(--mono);
+  font-size: inherit;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -4px;
+}
+.er-code::before {
+  color: var(--red);
+  opacity: 0.15;
+  animation: glitchTop 4s infinite;
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+}
+.er-code::after {
+  color: var(--accent2);
+  opacity: 0.12;
+  animation: glitchBot 4s infinite;
+  clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+}
+
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-2px, 1px); }
+  94% { transform: translate(2px, -1px); }
+  96% { transform: translate(-1px, 2px); }
+  98% { transform: translate(1px, 0); }
+}
+@keyframes glitchTop {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(3px, 0); }
+  94% { transform: translate(-2px, 0); }
+}
+@keyframes glitchBot {
+  0%, 90%, 100% { transform: translate(0); }
+  93% { transform: translate(-3px, 0); }
+  95% { transform: translate(2px, 0); }
+}
+
+.er-tag {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--red);
+  background: rgba(255,71,87,0.08);
+  border: 1px solid rgba(255,71,87,0.25);
+  padding: 4px 14px;
+  border-radius: 100px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.er-title {
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+
+.er-desc {
+  font-size: 0.95rem;
+  color: var(--text2);
+  max-width: 420px;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.er-desc code {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  color: var(--accent);
+  background: rgba(0,255,136,0.07);
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(0,255,136,0.12);
+}
+
+/* terminal block */
+.er-terminal {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 2.5rem;
+  text-align: left;
+  min-width: 320px;
+  max-width: 480px;
+  width: 100%;
+}
+.er-terminal__bar {
+  background: var(--bg2);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.er-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.er-dot--r { background: #ff5f56; }
+.er-dot--y { background: #ffbd2e; }
+.er-dot--g { background: #27c93f; }
+.er-terminal__body {
+  padding: 1.1rem 1.25rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.8;
+}
+.er-terminal__line { display: flex; gap: 0.5rem; }
+.er-prompt { color: var(--accent); }
+.er-cmd { color: var(--text2); }
+.er-output--red { color: var(--red); }
+.er-output--dim { color: var(--text3); }
+.er-output--ok  { color: var(--accent); }
+.er-cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--accent);
+  vertical-align: middle;
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* CTAs */
+.er-ctas {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.er-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.35rem;
+  border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.18s;
+  cursor: pointer;
+}
+.er-btn--primary { background: var(--accent); color: #000; }
+.er-btn--primary:hover {
+  background: #1aff99;
+  box-shadow: 0 0 24px rgba(0,255,136,0.3);
+  transform: translateY(-2px);
+  text-decoration: none;
+  color: #000;
+}
+.er-btn--outline { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+.er-btn--outline:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* FOOTER */
+.er-footer {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid var(--border);
+  padding: 1.25rem 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  background: var(--bg2);
+}
+.er-footer__brand { font-family: var(--mono); font-size: 0.8rem; color: var(--accent); }
+.er-footer__brand::before { content: '> '; color: var(--text3); }
+.er-footer__links { display: flex; gap: 1rem; }
+.er-footer__links a {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--text3);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.er-footer__links a:hover { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 600px) {
+  .er-nav__links { display: none; }
+  .er-footer { flex-direction: column; align-items: flex-start; }
+}
+</style>
+
+<div class="er">
+
+<!-- NAV -->
+<nav class="er-nav">
+  <a href="/" class="er-nav__logo">prakhar0x01</a>
+  <ul class="er-nav__links">
+    <li><a href="/">home</a></li>
+    <li><a href="/blog/">blog</a></li>
+    <li><a href="/#projects">projects</a></li>
+    <li><a href="/contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- BODY -->
+<div class="er-body">
+
+  <div class="er-code">404</div>
+  <div class="er-tag">// page_not_found</div>
+
+  <h1 class="er-title">You've gone off the map.</h1>
+  <p class="er-desc">
+    The page you're looking for doesn't exist, was moved, or the URL is broken.
+    Even the best recon hits dead ends — try navigating back.
+  </p>
+
+  <div class="er-terminal">
+    <div class="er-terminal__bar">
+      <span class="er-dot er-dot--r"></span>
+      <span class="er-dot er-dot--y"></span>
+      <span class="er-dot er-dot--g"></span>
+    </div>
+    <div class="er-terminal__body">
+      <div class="er-terminal__line">
+        <span class="er-prompt">~$</span>
+        <span class="er-cmd">curl {{ page.url }}</span>
+      </div>
+      <div class="er-terminal__line">
+        <span class="er-output--red">HTTP/1.1 404 Not Found</span>
+      </div>
+      <div class="er-terminal__line">
+        <span class="er-output--dim">Content-Type: text/html; charset=utf-8</span>
+      </div>
+      <div class="er-terminal__line" style="margin-top:0.4rem;">
+        <span class="er-prompt">~$</span>
+        <span class="er-cmd">cd /home &amp;&amp; <span class="er-cursor"></span></span>
+      </div>
+      <div class="er-terminal__line">
+        <span class="er-output--ok">→ redirecting to safety...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="er-ctas">
+    <a href="/" class="er-btn er-btn--primary">← Back to Home</a>
+    <a href="/blog/" class="er-btn er-btn--outline">Read Blog</a>
+    <a href="/contact" class="er-btn er-btn--outline">Contact</a>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer class="er-footer">
+  <span class="er-footer__brand">prakhar0x01</span>
+  <div class="er-footer__links">
+    <a href="/">Home</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://github.com/prakhar0x01" target="_blank">GitHub</a>
+    <a href="https://hackerone.com/prakhar0x01" target="_blank">HackerOne</a>
+  </div>
+</footer>
+
+</div><!-- .er -->

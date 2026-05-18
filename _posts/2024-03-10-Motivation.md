@@ -4,7 +4,7 @@ categories:
 - Mindset
 excerpt: |
   Motivation drives our actions and decisions in various ways. From societal expectations to personal ambitions, understanding the different aspects of motivation can help you channel it effectively. This guide explores the philosophy and psychology behind motivation and offers insights into overcoming common challenges.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/psychology-motivation/2560/600"
 ---
 
 > Motivation drives our actions and decisions in various ways. From societal expectations to personal ambitions, understanding the different aspects of motivation can help you channel it effectively. This guide explores the philosophy and psychology behind motivation and offers insights into overcoming common challenges.

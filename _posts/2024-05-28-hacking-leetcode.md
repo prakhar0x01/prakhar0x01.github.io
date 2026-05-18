@@ -4,7 +4,7 @@ categories:
 - write-ups
 excerpt: |
   While most people use LeetCode to sharpen their problem-solving skills, I took a different route—digging into its logic. In this blog, I’ll walk you through how I found and responsibly reported three impactful business logic vulnerabilities in LeetCode’s main application - [leetcode.com](https://leetcode.com/). Each case involved clever misuse of logic, and none required complex technical exploits. Just pure understanding of how things shouldn't work.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/leetcode-logic/2560/600"
 ---
 
 > While most people use LeetCode to sharpen their problem-solving skills, I took a different route—digging into its logic. In this blog, I’ll walk you through how I found and responsibly reported three impactful business logic vulnerabilities in LeetCode’s main application - [leetcode.com](https://leetcode.com/). Each case involved clever misuse of logic, and none required complex technical exploits. Just pure understanding of how things shouldn't work.

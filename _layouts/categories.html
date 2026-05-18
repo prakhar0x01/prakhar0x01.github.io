@@ -1,27 +1,341 @@
 ---
 layout: default
 ---
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-{% include site-header.html %}
+<style>
+:root {
+  --bg:      #080c10;
+  --bg2:     #0d1117;
+  --bg3:     #161b22;
+  --border:  #21262d;
+  --accent:  #00ff88;
+  --accent2: #0080ff;
+  --text:    #e6edf3;
+  --text2:   #8b949e;
+  --text3:   #7d8590;
+  --mono:    'JetBrains Mono', 'Fira Code', monospace;
+  --sans:    'Inter', system-ui, -apple-system, sans-serif;
+  --r:       8px;
+  --glow:    0 0 22px rgba(0,255,136,0.2);
+  --glow2:   0 0 22px rgba(0,128,255,0.2);
+}
 
-<main class="main  container">
+.ca { all: initial; display: block; font-family: var(--sans); }
+.ca *, .ca *::before, .ca *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.ca { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
 
-  <div class="content">
+body.layout-categories {
+  background: var(--bg) !important;
+  margin: 0; padding: 0;
+}
+body.layout-categories > header,
+body.layout-categories > footer,
+body.layout-categories > .main { display: none !important; }
 
-    <article class="article  article--page  typeset">
+/* NAV */
+.ca-nav {
+  position: sticky;
+  top: 0; z-index: 999;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6vw;
+  background: rgba(8,12,16,0.9);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.ca-nav__logo {
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+}
+.ca-nav__logo::before { content: '> '; color: var(--text3); font-weight: 400; }
+.ca-nav__links { display: flex; gap: 1.5rem; list-style: none; }
+.ca-nav__links a {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--text2);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.ca-nav__links a:hover, .ca-nav__links a.active { color: var(--accent); }
 
-      <h1>{{ page.title }}</h1>
+.ca-nav__hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 6px;
+}
+.ca-nav__hamburger span { display: block; width: 22px; height: 2px; background: var(--text2); border-radius: 2px; transition: all 0.25s; }
+.ca-nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.ca-nav__hamburger.open span:nth-child(2) { opacity: 0; }
+.ca-nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-      {{ content }}
+/* HERO */
+.ca-hero {
+  padding: 4rem 8vw 3rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.ca-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 100% at 90% 50%, rgba(0,255,136,0.03) 0%, transparent 70%);
+  pointer-events: none;
+}
+.ca-eyebrow { font-family: var(--mono); font-size: 0.7rem; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.6rem; }
+.ca-hero__title { font-family: var(--mono); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); margin-bottom: 0.6rem; }
+.ca-hero__title .dot { color: var(--accent); }
+.ca-hero__desc { font-size: 0.9rem; color: var(--text2); max-width: 540px; line-height: 1.7; }
 
-    </article>
+/* TABS */
+.ca-tabs {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.5rem 8vw;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  flex-wrap: wrap;
+}
+.ca-tab {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  text-decoration: none;
+  padding: 0.45rem 1rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  transition: all 0.2s;
+}
+.ca-tab:hover { text-decoration: none; }
+.ca-tab--writeup:hover, .ca-tab--writeup.active { color: var(--accent2); border-color: var(--accent2); background: rgba(0,128,255,0.06); }
+.ca-tab--mindset:hover, .ca-tab--mindset.active { color: var(--accent); border-color: var(--accent); background: rgba(0,255,136,0.06); }
 
-    {% include post-categories.html %}
+/* BODY */
+.ca-body { padding: 0 8vw 5rem; }
 
+/* SECTION */
+.ca-section { padding-top: 3.5rem; }
+.ca-section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.ca-section-icon { font-size: 1.4rem; }
+.ca-section-title { font-family: var(--mono); font-size: 1rem; font-weight: 700; color: var(--text); }
+.ca-section-count {
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 2px 10px;
+  border-radius: 100px;
+}
+.ca-section-line { flex: 1; height: 1px; background: var(--border); }
+
+/* GRID */
+.ca-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+}
+
+.ca-card {
+  display: block;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 1.4rem;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.22s ease;
+}
+.ca-card--writeup:hover { border-color: var(--accent2); box-shadow: var(--glow2); transform: translateY(-3px); text-decoration: none; }
+.ca-card--mindset:hover  { border-color: var(--accent);  box-shadow: var(--glow);  transform: translateY(-3px); text-decoration: none; }
+
+.ca-card__badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 0.7rem;
+}
+.ca-card--writeup .ca-card__badge { color: var(--accent2); background: rgba(0,128,255,0.07); border: 1px solid rgba(0,128,255,0.2); }
+.ca-card--mindset  .ca-card__badge { color: var(--accent);  background: rgba(0,255,136,0.07); border: 1px solid rgba(0,255,136,0.2); }
+
+.ca-card__title { font-size: 0.95rem; font-weight: 600; color: var(--text); line-height: 1.45; margin-bottom: 0.5rem; }
+.ca-card__excerpt { font-size: 0.8rem; color: var(--text2); line-height: 1.6; margin-bottom: 0.85rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ca-card__meta { display: flex; align-items: center; justify-content: space-between; }
+.ca-card__date { font-family: var(--mono); font-size: 0.64rem; color: var(--text3); }
+.ca-card__arrow { font-size: 0.75rem; color: var(--text3); transition: all 0.2s; }
+.ca-card--writeup:hover .ca-card__arrow { color: var(--accent2); transform: translateX(3px); }
+.ca-card--mindset:hover  .ca-card__arrow { color: var(--accent);  transform: translateX(3px); }
+
+/* FOOTER */
+.ca-footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 2rem 8vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.ca-footer__brand { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); }
+.ca-footer__brand::before { content: '> '; color: var(--text3); }
+.ca-footer__links { display: flex; gap: 1.25rem; }
+.ca-footer__links a { font-family: var(--mono); font-size: 0.72rem; color: var(--text3); text-decoration: none; transition: color 0.2s; }
+.ca-footer__links a:hover { color: var(--accent); text-decoration: none; }
+
+@media (max-width: 768px) {
+  .ca-nav__hamburger { display: flex; }
+  .ca-nav__links {
+    position: fixed; top: 60px; left: 0; right: 0;
+    background: rgba(8,12,16,0.97);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column; padding: 0.5rem 6vw 1rem; gap: 0; display: none;
+  }
+  .ca-nav__links.open { display: flex; }
+  .ca-nav__links li { border-bottom: 1px solid var(--border); }
+  .ca-nav__links li:last-child { border-bottom: none; }
+  .ca-nav__links a { display: block; padding: 0.9rem 0; font-size: 0.88rem; }
+  .ca-hero { padding: 3rem 6vw 2rem; }
+  .ca-tabs { padding: 1rem 6vw; }
+  .ca-body { padding: 0 6vw 4rem; }
+  .ca-footer { flex-direction: column; align-items: flex-start; padding: 1.5rem 6vw; }
+}
+</style>
+
+<div class="ca">
+
+<!-- NAV -->
+<nav class="ca-nav">
+  <a href="/" class="ca-nav__logo">prakhar0x01</a>
+  <button class="ca-nav__hamburger" aria-label="Menu" onclick="toggleCatNav(this)">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="ca-nav__links" id="ca-nav-links">
+    <li><a href="/">home</a></li>
+    <li><a href="/#hof">hall_of_fame</a></li>
+    <li><a href="/#experience">experience</a></li>
+    <li><a href="/#projects">projects</a></li>
+    <li><a href="/blog/" class="active">blog</a></li>
+    <li><a href="/contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="ca-hero">
+  <div class="ca-eyebrow">// categories</div>
+  <h1 class="ca-hero__title">All Posts<span class="dot">.</span></h1>
+  <p class="ca-hero__desc">Browse by category — security research write-ups and mindset &amp; philosophy writings.</p>
+</div>
+
+<!-- TABS -->
+<div class="ca-tabs">
+  <a href="#write-ups" class="ca-tab ca-tab--writeup active">🔍 Security Write-ups</a>
+  <a href="#mindset"   class="ca-tab ca-tab--mindset">🧠 Mindset &amp; Philosophy</a>
+</div>
+
+<!-- BODY -->
+<div class="ca-body">
+
+  {% assign writeups = site.categories['write-ups'] %}
+  {% assign mindset  = site.categories['Mindset'] %}
+
+  <!-- WRITE-UPS -->
+  <div class="ca-section" id="write-ups">
+    <div class="ca-section-header">
+      <span class="ca-section-icon">🔍</span>
+      <span class="ca-section-title">Security Write-ups</span>
+      <span class="ca-section-count">{{ writeups | size }}</span>
+      <div class="ca-section-line"></div>
+    </div>
+    <div class="ca-grid">
+      {% for post in writeups %}
+      <a href="{{ post.url }}" class="ca-card ca-card--writeup">
+        <span class="ca-card__badge">write-up</span>
+        <div class="ca-card__title">{{ post.title }}</div>
+        {% if post.excerpt %}<div class="ca-card__excerpt">{{ post.excerpt | strip_html | truncate: 130 }}</div>{% endif %}
+        <div class="ca-card__meta">
+          <span class="ca-card__date">{{ post.date | date: "%b %d, %Y" }}</span>
+          <span class="ca-card__arrow">→</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
   </div>
 
-  {% if page.aside == true %}{% include site-aside.html align="left" %}{% endif %}
+  <!-- MINDSET -->
+  <div class="ca-section" id="mindset">
+    <div class="ca-section-header">
+      <span class="ca-section-icon">🧠</span>
+      <span class="ca-section-title">Mindset &amp; Philosophy</span>
+      <span class="ca-section-count">{{ mindset | size }}</span>
+      <div class="ca-section-line"></div>
+    </div>
+    <div class="ca-grid">
+      {% for post in mindset %}
+      <a href="{{ post.url }}" class="ca-card ca-card--mindset">
+        <span class="ca-card__badge">mindset</span>
+        <div class="ca-card__title">{{ post.title }}</div>
+        {% if post.excerpt %}<div class="ca-card__excerpt">{{ post.excerpt | strip_html | truncate: 130 }}</div>{% endif %}
+        <div class="ca-card__meta">
+          <span class="ca-card__date">{{ post.date | date: "%b %d, %Y" }}</span>
+          <span class="ca-card__arrow">→</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
 
-</main>
+</div><!-- .ca-body -->
 
-{% include site-footer.html %}
+<!-- FOOTER -->
+<footer class="ca-footer">
+  <span class="ca-footer__brand">prakhar0x01</span>
+  <div class="ca-footer__links">
+    <a href="/">Home</a>
+    <a href="/blog/">Blog</a>
+    <a href="https://hackerone.com/prakhar0x01" target="_blank">HackerOne</a>
+    <a href="https://github.com/prakhar0x01" target="_blank">GitHub</a>
+    <a href="/contact">Contact</a>
+  </div>
+</footer>
+
+</div><!-- .ca -->
+
+<script>
+(function() {
+  function toggleCatNav(btn) {
+    btn.classList.toggle('open');
+    document.getElementById('ca-nav-links').classList.toggle('open');
+  }
+  window.toggleCatNav = toggleCatNav;
+  document.querySelectorAll('#ca-nav-links a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      document.getElementById('ca-nav-links').classList.remove('open');
+      var btn = document.querySelector('.ca-nav__hamburger');
+      if (btn) btn.classList.remove('open');
+    });
+  });
+})();
+</script>

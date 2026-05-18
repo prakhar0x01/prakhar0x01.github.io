@@ -4,7 +4,7 @@ categories:
 - Mindset
 excerpt: |
   Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/oppenheimer-karma/2560/600"
 ---
 
 > Explore the philosophical insights of J. Robert Oppenheimer, focusing on his study of the Bhagavad Gita and the concept of consequences. Delve into the differences between external and internal consequences, and how they shaped Oppenheimer's views on his role in creating the atomic bomb. Understand the interplay of karma and dharma in both personal and global contexts.

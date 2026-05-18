@@ -4,7 +4,7 @@ categories:
 - Mindset
 excerpt: |
    The FriendZone is a common yet complex scenario where emotional investment doesn't lead to a romantic relationship. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/friendzone-mindset/2560/600"
 ---
 
 >The FriendZone is a common yet complex scenario where emotional investment doesn't lead to a romantic relationship. Understanding the dynamics at play, from chemistry to personal preferences, can help you approach relationships with greater clarity and confidence. By expressing your intentions early and maintaining a balanced perspective, you can improve your chances of moving beyond the FriendZone and forming a deeper connection.

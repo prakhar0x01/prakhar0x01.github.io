@@ -4,7 +4,7 @@ categories:
 - write-ups
 excerpt: |
   My experience of finding multiple IDOR's vulnerabilities in the US Army Systems sub-unit of US Dept. Of Defence. In this blog post, i’ll explain all the technical part and non-technical parts of it.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/dod-idor-chain/2560/600"
 ---
 
 > I get acknowledged & appreciated by US Department Of Defence for finding multiple Security vulnerabilities in the US amry systems i..e `█████.army.mil`. In this blog post, I’ll explain all the technical part and non-technical parts of it.

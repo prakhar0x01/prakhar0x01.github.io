@@ -4,7 +4,7 @@ categories:
 - Mindset
 excerpt: |
    Masculinity encompasses more than just traditional roles and traits. It's about taking responsibility, leading, and evolving. This guide explores what masculinity means today, the traits associated with it, and how it contrasts with feminine roles and energy.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/masculinity-stoic/2560/600"
 ---
 
 >Masculinity encompasses more than just traditional roles and traits. It's about taking responsibility, leading, and evolving. This guide explores what masculinity means today, the traits associated with it, and how it contrasts with feminine roles and energy.

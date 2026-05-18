@@ -4,7 +4,7 @@ categories:
 - write-ups
 excerpt: |
   My experience of hacking into the dutch government and get rewarded “Dutch Government lousy T-Shirt”. In this blog post, i’ll explain all the technical part and non-technical parts of it.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/dutch-gov-ssrf/2560/600"
 ---
 
 > I get rewarded “Dutch Government T-Shirt” for my contribution to their security infrastructure. I’ll explain all the technical part and non-technical parts of it. But before that, I want to tell you why am I proud of it or why the title of this post is “NOT GIVING-UP”.

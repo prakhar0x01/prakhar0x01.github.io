@@ -4,7 +4,7 @@ categories:
 - write-ups
 excerpt: |
   My experience of finding multiple security vulnerabilities in the NASA Systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/nasa-account-takeover/2560/600"
 ---
 
 > I received 3 letters of appreciation from NASA for finding multiple potential Security vulnerabilities in their systems. In this blog post, I’ll explain all the technical part and non-technical parts of it.

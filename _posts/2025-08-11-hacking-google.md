@@ -4,7 +4,7 @@ categories:
 - write-ups
 excerpt: |
   My experience of discovering and reporting  a Privilege Escalation case in YouTube Studio (sub-unit of Google). In this blog post, i’ll explain all the technical part and non-technical parts of it.
-image: "https://picsum.photos/2560/600?image=733"
+image: "https://picsum.photos/seed/google-priv-esc/2560/600"
 ---
 
 ---
